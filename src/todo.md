@@ -1,0 +1,31 @@
+class Ship {
+ constructor() length, number of times its been hit, sunk or not
+ 
+ hit() function increasing number of hits in the ship
+
+ isSunk() function calculating if the ship is sunk based on length and number of ships
+}
+
+class Gameboard {
+  constructor() create an empty board of size xy
+  
+  placeShip() call ship constructor and place on the board at specific coordinates
+  
+  receiveAttack() takes a pair of coordinates, determine if its a hit or not; if yes, call the ship's hit function, if not, record a miss
+  
+  keep track of missed shots and display them
+  
+  report whether all ships of the board have been sunk
+  
+}
+
+class Player {
+  human-player and computer-player
+  
+  take turns attacking the enemy's gameboard
+  
+}
+
+playGame {
+  set up new game by creating players and gameboards
+}
