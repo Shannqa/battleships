@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(10, 18px);
+  column-gap: 0px;
+  row-gap: 0px;
+  justify-items: stretch;
+  font-size: 12px;
+}
+
+.square {
+  width: 18px;
+  height: 18px;
+  border: 1px black solid;
+  background: white;
+  margin: 0px;
+}
+
+.ship {
+  background-color: red;
+}
+
+.miss {
+  background-color: grey;
+}
+
+.hit {
+  background-color: rgb(255, 98, 205);
+}
+

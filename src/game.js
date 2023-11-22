@@ -1,37 +1,14 @@
 class Ship {
-  #msg = "hello world";
-  #id = Math.floor(Math.random() * 100);
-
-  constructor(length) {
+  constructor(length, id) {
     this.length = length;
     this.hits = 0;
     this.destroyed = false;
+    this.id = id;
   }
-  
-  get shipID() {
-    return this.#id;
-  }
-  get msg() {
-    return this.#msg;
-  }
-  set #amsg(x) {
-    this.#msg = `hello ${x}`;
-  }
-  
-  set id(x) {
-    this.id = "x";
-  }
-  
-  get id() {
-    return id;
-  }
-  
+
   hit() {
     this.hits += 1;
     this.isSunk();
-    this.#amsg = "lala";
-    //private setter works inside the class, doesnt outside or it
-
   }
 
   isSunk() {
@@ -47,34 +24,43 @@ class Gameboard {
   constructor(owner) {
     this.grid = this.createGrid();
     this.owner = owner;
+    this.shipsList = [];
     //receivedHits = 0;
   }
 
   placeShip(length, coordsStart, coordsEnd) {
-    const placedShip = new Ship(length);
-    console.log(this.grid[coordsStart[0]][coordsStart[1]]);
+    const id = this.shipsList.length;
+    const placedShip = new Ship(length, id);
+    // const placedShip = new Ship(length, coordsStart, coordsEnd);
+    // console.log(this.grid[coordsStart[0]][coordsStart[1]]);
     // if the ship's length > 2, mark the other squares too
+
+    this.shipsList.push(placedShip);
     if (coordsStart[0] !== coordsEnd[0]) {
       for (let i = coordsStart[0]; i <= coordsEnd[0]; i++) {
-        this.grid[i][coordsStart[1]] = "ship";
+        this.grid[i][coordsStart[1]] = id;
       }
     }
     if (coordsStart[1] !== coordsEnd[1]) {
       for (let i = coordsStart[1]; i <= coordsEnd[1]; i++) {
-        this.grid[i][coordsStart[1]] = "ship";
+        this.grid[coordsStart[0]][i] = id;
       }
     }
 
-    this.grid[coordsStart[0]][coordsStart[1]] = "ship";
-    this.grid[coordsEnd[0]][coordsEnd[1]] = "ship";
+    this.grid[coordsStart[0]][coordsStart[1]] = id;
+    this.grid[coordsEnd[0]][coordsEnd[1]] = id;
   }
 
   receiveAttack(coordsX, coordsY) {
-    if (this.grid[coordsX][coordsY] === "ship") {
-      this.grid[coordsX][coordsY] = "hit";
-      placedShip.hit();
-    } else if (this.grid[coordsX][coordsY] === null) {
+    let id = this.grid[coordsX][coordsY];
+    if (id === null) {
       this.grid[coordsX][coordsY] = "miss";
+    } else if (id === "miss" || id === "hit") {
+      return "invalid move";
+    } else {
+      let hitShip = this.shipsList[id];
+      this.grid[coordsX][coordsY] = "hit";
+      hitShip.hit();
     }
   }
 
@@ -93,20 +79,42 @@ class Gameboard {
     }
     return gridArray;
   }
+
+  drawGrid() {
+    const array = this.grid;
+
+    const body = document.querySelector("body");
+    const grid = document.createElement("div");
+
+    array.forEach((row, rindex) => {
+      row.forEach((cell, cindex) => {
+        const square = document.createElement("div");
+        square.classList.add("square");
+        square.setAttribute("id", `r${rindex}c${cindex}`);
+        if (cell === "ship") {
+          square.classList.add("ship");
+        }
+        if (cell === "miss") {
+          square.classList.add("miss");
+        }
+        if (cell === "hit") {
+          square.classList.add("hit");
+        }
+        grid.appendChild(square);
+      });
+    });
+
+    grid.classList.add("grid");
+    body.appendChild(grid);
+  }
 }
 
 class Player {
   constructor(owner) {
     this.owner = owner;
   }
-
-  prepareGameboard(owner) {
-    const board = new Gameboard(owner);
-  }  
-  
 }
-
-
+/*
 const testShip = new Ship();
 const board = new Gameboard();
 board.createGrid();
@@ -120,6 +128,5 @@ console.log(board.grid);
 console.log(testShip.shipID);
 const testShip1 = new Ship();
 console.log(testShip1.shipID);
-
-
+*/
 export { Ship, Gameboard, Player };
