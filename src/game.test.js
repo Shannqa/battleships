@@ -33,3 +33,26 @@ test("Check that the ships are placed correctly on the gameboard", () => {
   expect(board.grid[4][3]).toBe(null);
   expect(board.grid[8][4]).toBe(null);
 });
+
+test("Check that the hits and misses are recorded correctly on the board.", () => {
+  const board = new Gameboard();
+  board.placeShip(3, [5, 3], [8, 3]);
+  board.hit(5, 3);
+  board.hit(4, 8);
+
+  expect(board.grid[5][3]).not.toBe(null);
+  expect(board.grid[5][3]).not.toBe("miss");
+  expect(board.grid[4][8]).toBe("miss");
+});
+
+test("Check if the gameboard reports correctly that the game is lost.", () => {
+  const board = new Gameboard();
+  const possibleScore = 3;
+  board.placeShip(3, [5, 3], [7, 3]);
+  board.hit(5, 3);
+  board.hit(6, 3);
+  board.hit(6, 3);
+
+  expect(board.lostGame).toBe(true);
+  expect(board.checkIfLost()).toHaveReturnedWith(true)
+});

@@ -15,13 +15,13 @@ class Gameboard {
 
 > placeShip() call ship constructor and place on the board at specific coordinates
 
-connect the ship instance to the board, it should be notified of any hits
+> connect the ship instance to the board, it should be notified of any hits
 
-receiveAttack() takes a pair of coordinates, determine if its a hit or not; if yes, call the ship's hit function, if not, record a miss
+> receiveAttack() takes a pair of coordinates, determine if its a hit or not; if yes, call the ship's hit function, if not, record a miss
 
-keep track of missed shots and display them
+> keep track of missed shots and display them
 
-report whether all ships of the board have been sunk
+> report whether all ships of the board have been sunk
 
 }
 

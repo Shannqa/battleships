@@ -1,3 +1,13 @@
+// possibleScore depends on the overall nr of ships and their length
+// available ships:
+// 1x 5-square
+// 1x 4-square
+// 2x 3-square
+// 2x 2-square
+// = 19 possible score
+
+const possibleScore = 19;
+
 class Ship {
   constructor(length, id) {
     this.length = length;
@@ -25,7 +35,8 @@ class Gameboard {
     this.grid = this.createGrid();
     this.owner = owner;
     this.shipsList = [];
-    //receivedHits = 0;
+    this.receivedHits = 0;
+    this.lostGame = false;
   }
 
   placeShip(length, coordsStart, coordsEnd) {
@@ -61,14 +72,18 @@ class Gameboard {
       let hitShip = this.shipsList[id];
       this.grid[coordsX][coordsY] = "hit";
       hitShip.hit();
+      this.receivedHits += 1;
     }
   }
 
-  // checkIfLost() {
-  //   if (this.receivedHits >= possibleScore) {
-  //     lost
-  //   }
-  // }
+  checkIfLost() {
+    if (this.receivedHits >= possibleScore) {
+      this.lostGame = true;
+
+        return true;
+     }
+    return false;
+   }
   createGrid() {
     let gridArray = [];
     for (let x = 0; x < 10; x++) {
