@@ -11,9 +11,11 @@ class Ship {
 }
 
 class Gameboard {
-constructor() create an empty board of size xy
+> constructor() create an empty board of size xy
 
-placeShip() call ship constructor and place on the board at specific coordinates
+> placeShip() call ship constructor and place on the board at specific coordinates
+
+connect the ship instance to the board, it should be notified of any hits
 
 receiveAttack() takes a pair of coordinates, determine if its a hit or not; if yes, call the ship's hit function, if not, record a miss
 

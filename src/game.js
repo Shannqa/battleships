@@ -1,13 +1,37 @@
 class Ship {
+  #msg = "hello world";
+  #id = Math.floor(Math.random() * 100);
+
   constructor(length) {
     this.length = length;
     this.hits = 0;
     this.destroyed = false;
   }
-
+  
+  get shipID() {
+    return this.#id;
+  }
+  get msg() {
+    return this.#msg;
+  }
+  set #amsg(x) {
+    this.#msg = `hello ${x}`;
+  }
+  
+  set id(x) {
+    this.id = "x";
+  }
+  
+  get id() {
+    return id;
+  }
+  
   hit() {
     this.hits += 1;
     this.isSunk();
+    this.#amsg = "lala";
+    //private setter works inside the class, doesnt outside or it
+
   }
 
   isSunk() {
@@ -20,8 +44,9 @@ class Ship {
 }
 
 class Gameboard {
-  constructor() {
+  constructor(owner) {
     this.grid = this.createGrid();
+    this.owner = owner;
     //receivedHits = 0;
   }
 
@@ -70,9 +95,31 @@ class Gameboard {
   }
 }
 
+class Player {
+  constructor(owner) {
+    this.owner = owner;
+  }
+
+  prepareGameboard(owner) {
+    const board = new Gameboard(owner);
+  }  
+  
+}
+
+
+const testShip = new Ship();
 const board = new Gameboard();
 board.createGrid();
 board.placeShip(3, [1, 3], [3, 3]);
-console.log(board.grid);
+//board.#id;
+testShip.hit();
+console.log(testShip.shipID);
+console.log(testShip.msg);
 
-export { Ship, Gameboard };
+console.log(board.grid);
+console.log(testShip.shipID);
+const testShip1 = new Ship();
+console.log(testShip1.shipID);
+
+
+export { Ship, Gameboard, Player };
