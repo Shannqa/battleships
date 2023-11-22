@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   moduleFileExtensions: ["js", "jsx"],
   moduleDirectories: ["node_modules", "bower_components", "shared"],
 
@@ -7,6 +7,4 @@ export default {
     "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js",
     "^config$": "<rootDir>/configs/app-config.js",
   },
-
-  transform: {},
 };
