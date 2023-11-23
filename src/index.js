@@ -9,6 +9,20 @@ createDom();
 const body = document.querySelector("body");
 const main = document.querySelector(".main");
 
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  var data = ev.dataTransfer.getData("text");
+  ev.target.appendChild(document.getElementById(data));
+}
+
 function createGrid() {
   let gridArray = [];
   for (let x = 0; x < 10; x++) {
@@ -21,6 +35,7 @@ function createGrid() {
 }
 
 function drawGrid() {
+  const ownBoard = document.querySelector(".own-board");
   const array = createGrid();
 
   const body = document.querySelector("body");
@@ -47,52 +62,38 @@ function drawGrid() {
   });
 
   grid.classList.add("grid");
-  body.appendChild(grid);
+  ownBoard.appendChild(grid);
 }
 
 drawGrid();
 
-const ship1 = document.createElement("div");
-const shipSq = document.createElement("div");
-const shipSq1 = document.createElement("div");
-shipSq.classList.add("square");
-shipSq1.classList.add("square");
-shipSq.classList.add("shipsq");
-shipSq1.classList.add("shipsq");
-ship1.classList.add("ship");
-body.appendChild(ship1);
-ship1.appendChild(shipSq);
-ship1.appendChild(shipSq1);
+const placeShips = document.querySelector(".place-ships");
+const shipList = document.createElement("div");
+const shipLengths = [2, 3, 4, 5];
+shipLengths.forEach((item) => {
+  const shipDiv = document.createElement("div");
+  shipDiv.classList.add("ship-div");
+  for (let i = 0; i < item; i++) {
+    const shipSq = document.createElement("div");
+    shipSq.classList.add("square");
+    shipSq.classList.add("shipsq");
+    shipDiv.appendChild(shipSq);
+  }
+  shipList.appendChild(shipDiv);
+});
+placeShips.appendChild(shipList);
 
-ship1.setAttribute("draggable", "true");
-ship1.setAttribute("id", "ship1");
-ship1.addEventListener("dragstart", drag);
+// const shipSq = document.createElement("div");
+// const shipSq1 = document.createElement("div");
+// shipSq.classList.add("square");
+// shipSq1.classList.add("square");
+// shipSq.classList.add("shipsq");
+// shipSq1.classList.add("shipsq");
+// ship1.classList.add("ship");
+// placeShips.appendChild(ship1);
+// ship1.appendChild(shipSq);
+// ship1.appendChild(shipSq1);
 
-/////////// tests
-const div1 = document.createElement("div");
-const img = new Image();
-img.src = imgsrc;
-
-function allowDrop(ev) {
-  ev.preventDefault();
-}
-
-function drag(ev) {
-  ev.dataTransfer.setData("text", ev.target.id);
-}
-
-function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  ev.target.appendChild(document.getElementById(data));
-}
-
-div1.setAttribute("id", "div1");
-div1.addEventListener("drop", drop);
-div1.addEventListener("dragover", allowDrop);
-img.setAttribute("id", "drag1");
-img.setAttribute("draggable", "true");
-img.addEventListener("dragstart", drag);
-
-body.appendChild(div1);
-body.appendChild(img);
+// ship1.setAttribute("draggable", "true");
+// ship1.setAttribute("id", "ship1");
+// ship1.addEventListener("dragstart", drag);

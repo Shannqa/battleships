@@ -9,30 +9,31 @@ function createDom() {
   const footer = document.createElement("div");
 
   header.classList.add("header");
-  const title = document.createElement("div");
+  const title = document.createElement("span");
   title.textContent = "Battleships";
 
   main.classList.add("main");
-  const enemyBoard = document.createElement("div");
-  const enemyBoardTitle = document.createElement("div");
-  enemyBoardTitle.textContent = "Enemy board";
+  // const enemyBoard = document.createElement("div");
+  // const enemyBoardTitle = document.createElement("div");
+  // enemyBoardTitle.textContent = "Enemy board";
 
   const ownBoard = document.createElement("div");
-  const ownBoardTitle = document.createElement("div");
+  const ownBoardTitle = document.createElement("span");
+  ownBoard.classList.add("own-board");
   ownBoardTitle.textContent = "Your board";
 
-  const ships = document.createElement("div");
-  const shipsTitle = document.createElement("div");
+  const placeShips = document.createElement("div");
+  placeShips.classList.add("place-ships");
+  const shipsTitle = document.createElement("span");
   shipsTitle.textContent = "Place your ships";
 
   header.appendChild(title);
-  main.appendChild(enemyBoard);
-  enemyBoard.appendChild(enemyBoardTitle);
+  // main.appendChild(enemyBoard);
+  // enemyBoard.appendChild(enemyBoardTitle);
   main.appendChild(ownBoard);
   ownBoard.appendChild(ownBoardTitle);
-  main.appendChild(ships);
-  ships.appendChild(shipsTitle);
-  shipsTitle.textContent = "Place your ships";
+  main.appendChild(placeShips);
+  placeShips.appendChild(shipsTitle);
   body.appendChild(header);
   body.appendChild(main);
   body.appendChild(footer);

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@800&display=swap');
+
 * {
   box-sizing: border-box;
   margin: 0px;
@@ -7,6 +9,25 @@
 body {
   background-color: #0d1e26;
   color: #dca85d;
+}
+
+.header {
+  margin: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.header > span {
+  font-size: 2.5rem;
+  font-family: 'Cinzel', serif;
+  text-shadow: #3c3d51 0px -10px 6px, 2px 2px 2px #5f561b;
+  border-bottom: #dca85d 2px solid;
+  margin-bottom: 8px;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
 }
 
 .grid {
@@ -30,14 +51,7 @@ body {
   background: #234e66;
 }
 
-.ship {
-  position: absolute;
-}
 
-.shipsq {
-  background-color: red;
-  /* position: absolute; */
-}
 
 .miss {
   background-color: grey;
@@ -54,3 +68,39 @@ body {
   border: 1px solid #aaaaaa;
 }
 
+.own-board {
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.place-ships {
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.place-ships > span, .own-board > span {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.ship-div {
+  display: flex;
+  margin: 4px;
+}
+
+.ship {
+  /* position: absolute; */
+}
+.ship-on-board {
+  position: absolute;
+}
+.shipsq {
+  background-color: rgb(56 9 135);
+  /* position: absolute; */
+}
