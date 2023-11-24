@@ -92,15 +92,23 @@ body {
 .ship-div {
   display: flex;
   margin: 4px;
+  /* position: absolute; */
 }
 
 .ship {
   /* position: absolute; */
 }
+
 .ship-on-board {
   position: absolute;
+  margin: 0px;
 }
+
 .shipsq {
   background-color: rgb(56 9 135);
   /* position: absolute; */
+}
+
+.sq0-to-place:hover {
+  cursor: grab;
 }
