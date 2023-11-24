@@ -51,8 +51,6 @@ body {
   background: #234e66;
 }
 
-
-
 .miss {
   background-color: grey;
 }
@@ -77,10 +75,9 @@ body {
 }
 
 .place-ships {
-  margin: 6px;
+  margin: 6px 24px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   width: 300px;
 }
 
@@ -92,11 +89,6 @@ body {
 .ship-div {
   display: flex;
   margin: 4px;
-  /* position: absolute; */
-}
-
-.ship {
-  /* position: absolute; */
 }
 
 .ship-on-board {
@@ -106,9 +98,16 @@ body {
 
 .shipsq {
   background-color: rgb(56 9 135);
-  /* position: absolute; */
 }
 
 .sq0-to-place:hover {
   cursor: grab;
+}
+
+.flex-toggle {
+  flex-direction: column;
+}
+
+.place-info {
+  margin-top: 6px;
 }

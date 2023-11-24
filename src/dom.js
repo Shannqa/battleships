@@ -115,14 +115,24 @@ function prepareShips() {
 
     // need to handle error - when the item is dragged in the middle of two squares
     shipDiv.addEventListener("dragstart", drag);
+    shipDiv.addEventListener("dblclick", () => {
+      shipDiv.classList.toggle("flex-toggle");
+    });
     shipList.appendChild(shipDiv);
   });
 
+  const placeInfo = document.createElement("div");
+  const placeInfoSp = document.createElement("span");
+  placeInfo.classList.add("place-info");
+  placeInfoSp.textContent =
+    "Drag & drop the ships on the board. Doubleclick a ship to rotate it.";
+  placeInfo.appendChild(placeInfoSp);
   main.appendChild(ownBoard);
   ownBoard.appendChild(ownBoardTitle);
   main.appendChild(placeShips);
   placeShips.appendChild(shipsTitle);
   placeShips.appendChild(shipList);
+  placeShips.appendChild(placeInfo);
 
   drawGrid();
 }
