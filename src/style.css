@@ -110,4 +110,25 @@ body {
 
 .place-info {
   margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.start-game {
+  margin: 10px;
+  background-color: #11364a;
+  color: #dca85d;
+  border: 1px #dca85d solid;
+  padding: 6px 18px;
+  font-size: 1.2rem;
+  align-self: center;
+}
+
+.start-game:hover {
+  background-color: #234e66;
+  cursor: pointer;
+}
+
+.start-game:active {
+  background-color: rgb(56 9 135);
 }

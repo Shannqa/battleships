@@ -1,4 +1,4 @@
-import { Gameboard, Player } from "./game.js";
+import { Gameboard, Player, playGame } from "./game.js";
 
 function allowDrop(ev) {
   ev.preventDefault();
@@ -13,6 +13,10 @@ function drop(ev) {
   var data = ev.dataTransfer.getData("text");
   document.getElementById(data).classList.add("ship-on-board");
   ev.target.appendChild(document.getElementById(data));
+}
+
+function dragEnd(ev) {
+  areAllShipsPlaced();
 }
 
 function createGrid() {
@@ -94,6 +98,8 @@ function prepareShips() {
   shipsTitle.textContent = "Place your ships";
 
   const shipList = document.createElement("div");
+  shipList.classList.add("ship-list");
+
   const shipLengths = [2, 3, 4, 5];
   shipLengths.forEach((item, index) => {
     const shipDiv = document.createElement("div");
@@ -115,6 +121,7 @@ function prepareShips() {
 
     // need to handle error - when the item is dragged in the middle of two squares
     shipDiv.addEventListener("dragstart", drag);
+    shipDiv.addEventListener("dragend", dragEnd);
     shipDiv.addEventListener("dblclick", () => {
       shipDiv.classList.toggle("flex-toggle");
     });
@@ -122,7 +129,7 @@ function prepareShips() {
   });
 
   const placeInfo = document.createElement("div");
-  const placeInfoSp = document.createElement("span");
+  const placeInfoSp = document.createElement("p");
   placeInfo.classList.add("place-info");
   placeInfoSp.textContent =
     "Drag & drop the ships on the board. Doubleclick a ship to rotate it.";
@@ -137,4 +144,64 @@ function prepareShips() {
   drawGrid();
 }
 
-export { createDom, prepareShips };
+// check if all ships were placed on the board
+function areAllShipsPlaced() {
+  const placeShips = document.querySelector(".place-ships");
+  const shipList = document.querySelector(".ship-list");
+  if (shipList.childNodes.length === 0) {
+    const startGame = document.createElement("button");
+    startGame.textContent = "Start game";
+    startGame.classList.add("start-game");
+    startGame.addEventListener("click", checkplacedShips);
+    const placeInfo = document.querySelector(".place-info");
+    const placeInfoSp2 = document.createElement("p");
+    placeInfoSp2.textContent =
+      "Once you're happy with the placement of your ships, click the start button to begin the game!";
+    placeInfo.appendChild(startGame);
+    placeInfo.appendChild(placeInfoSp2);
+    placeShips.appendChild(placeInfo);
+  }
+}
+
+// +++ check if all ships are placed correctly
+function checkplacedShips() {
+  playGame();
+  ///
+}
+
+// place ships on the player's board
+function placeShips(board) {
+  // get placed ships coords
+  const shipLengths = [2, 3, 4, 5];
+  shipLengths.forEach((item, index) => {
+    const ship = document.querySelector(`#to-place-${index}`);
+    const coordStart = ship.parentNode.id;
+    coordStart.split("");
+    let startX = parseInt(coordStart[1]);
+    let startY = parseInt(coordStart[3]);
+    let length = parseInt(item);
+    // console.log(coordStart[1]);
+    console.log(length, [startX, startY], [startX + length - 1, startY]);
+
+    if (ship.classList.contains("flex-toggle")) {
+      // ship is vertical
+      let vertical = board.placeShip(
+        length,
+        [startX, startY],
+        [startX + length - 1, startY]
+      );
+      console.log(vertical);
+    } else {
+      // ship is horizontal
+      let horizontal = board.placeShip(
+        length,
+        [startX, startY],
+        [startX, startY + length - 1]
+      );
+      console.log(horizontal);
+    }
+    // need to somehow check which side its facing, up or down, and right or left
+  });
+}
+
+export { createDom, prepareShips, placeShips };
