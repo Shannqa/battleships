@@ -112,7 +112,7 @@ function prepareShips() {
       }
 
       shipSq.classList.add("square");
-      shipSq.classList.add("shipsq");
+      shipSq.classList.add("own-ship");
 
       shipDiv.appendChild(shipSq);
     }
@@ -177,30 +177,24 @@ function placeShips(board) {
     const ship = document.querySelector(`#to-place-${index}`);
     const coordStart = ship.parentNode.id;
     coordStart.split("");
-    let startX = parseInt(coordStart[1]);
-    let startY = parseInt(coordStart[3]);
+    let startRow = parseInt(coordStart[1]);
+    let startColumn = parseInt(coordStart[3]);
     let length = parseInt(item);
-    // console.log(coordStart[1]);
-    console.log(length, [startX, startY], [startX + length - 1, startY]);
-
     if (ship.classList.contains("flex-toggle")) {
       // ship is vertical
-      let vertical = board.placeShip(
+      board.placeShip(
         length,
-        [startX, startY],
-        [startX + length - 1, startY]
+        [startRow, startColumn],
+        [startRow, startColumn + length - 1]
       );
-      console.log(vertical);
     } else {
       // ship is horizontal
-      let horizontal = board.placeShip(
+      board.placeShip(
         length,
-        [startX, startY],
-        [startX, startY + length - 1]
+        [startRow, startColumn],
+        [startRow, startColumn + length - 1]
       );
-      console.log(horizontal);
     }
-    // need to somehow check which side its facing, up or down, and right or left
   });
 }
 

@@ -6,6 +6,7 @@
 // 2x 2-square
 // = 19 possible score
 
+import { isNumber } from "lodash";
 import { placeShips } from "./dom";
 
 const possibleScore = 19;
@@ -88,10 +89,10 @@ class Gameboard {
   }
   createGrid() {
     let gridArray = [];
-    for (let x = 0; x < 10; x++) {
+    for (let y = 0; y < 10; y++) {
       gridArray.push([]);
-      for (let y = 0; y < 10; y++) {
-        gridArray[x].push(null);
+      for (let x = 0; x < 10; x++) {
+        gridArray[y].push(null);
       }
     }
     return gridArray;
@@ -99,22 +100,24 @@ class Gameboard {
 
   drawGrid() {
     const array = this.grid;
+    console.log(array);
 
     const body = document.querySelector("body");
     const grid = document.createElement("div");
 
     array.forEach((row, rindex) => {
-      row.forEach((cell, cindex) => {
+      row.forEach((column, cindex) => {
         const square = document.createElement("div");
         square.classList.add("square");
         square.setAttribute("id", `r${rindex}c${cindex}`);
-        if (cell === "ship") {
-          square.classList.add("ship");
+        if (isNumber(column)) {
+          console.log(column);
+          square.classList.add("own-ship");
         }
-        if (cell === "miss") {
+        if (column === "miss") {
           square.classList.add("miss");
         }
-        if (cell === "hit") {
+        if (column === "hit") {
           square.classList.add("hit");
         }
         grid.appendChild(square);

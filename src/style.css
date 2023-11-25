@@ -132,3 +132,7 @@ body {
 .start-game:active {
   background-color: rgb(56 9 135);
 }
+
+.own-ship {
+  background: #1253d6;
+}
