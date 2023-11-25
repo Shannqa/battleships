@@ -7,7 +7,7 @@
 // = 19 possible score
 
 import { isNumber } from "lodash";
-import { placeShips } from "./dom";
+import { placeShips, cleanPlaceDom } from "./dom";
 
 const possibleScore = 19;
 
@@ -87,6 +87,7 @@ class Gameboard {
     }
     return false;
   }
+
   createGrid() {
     let gridArray = [];
     for (let y = 0; y < 10; y++) {
@@ -98,7 +99,88 @@ class Gameboard {
     return gridArray;
   }
 
+  randomizePlacement() {
+    const shipLengths = [2, 3, 4, 5];
+
+    // this.placeShip();
+
+    // recursive function to geenerate coordinates of AI's ships
+    // here ships may overlap
+
+    //something's wrong - start and end coords are the same!
+    function generateCoords(shipLength) {
+      const shipLengthInt = parseInt(shipLength);
+      const startRow = Math.floor(Math.random() * 10);
+      const startCol = Math.floor(Math.random() * 10);
+      const endRow = startRow + shipLength;
+      const endCol = startCol + shipLength;
+      let endCoord;
+      if (endRow < 10 && endCol < 10) {
+        //randomize - horizontal or vertical
+        let chance = Math.random() * 1;
+        if (chance < 0.5) {
+          return [
+            [startRow, startCol],
+            [startRow, endCol],
+          ];
+        } else {
+          return [
+            [startRow, startCol],
+            [endRow, startCol],
+          ];
+        }
+      } else if (endCol < 10) {
+        return [
+          [startRow, startCol],
+          [startRow, endCol],
+        ];
+      } else if (endRow < 10) {
+        return [
+          [startRow, startCol],
+          [endRow, startCol],
+        ];
+      } else {
+        return generateCoords(length);
+      }
+    }
+
+    for (let i = shipLengths.length - 1; i >= 0; i--) {
+      const length = parseInt(shipLengths[i]);
+      const coords = generateCoords(length);
+      console.log(coords);
+      //check if any coord is in the array
+      // let sq1 = [x, y];
+      // (sq2 = [x, y]), [z, v];
+      // this.placeShip(length, coords[0], coords[1]);
+      //`getFullCoords(coords);
+      //need to check if proposed ship's coordinate is on the grid
+    }
+
+    //check if proposed ship's coordinates are not already occupied on the grid
+    function getFullCoords(coords) {
+      let rowStart = coords[0][0];
+      let colStart = coords[0][1];
+      let rowEnd = coords[1][0];
+      let colEnd = coords[1][1];
+
+      let fullCoordinates = [];
+      if (rowStart !== rowEnd) {
+        for (let i = rowStart; i <= rowEnd; i++) {
+          fullCoordinates.push([[i][colStart]]);
+          this.grid[i][coordsStart[1]] = id;
+        }
+      }
+      if (colStart !== colEnd) {
+        for (let i = colStart; i <= colEnd; i++) {
+          fullCoordinates.push([[rowStart][i]]);
+        }
+      }
+      console.log(fullCoordinates);
+    }
+  }
+
   drawGrid() {
+    const main = document.querySelector(".main");
     const array = this.grid;
     console.log(array);
 
@@ -123,9 +205,13 @@ class Gameboard {
         grid.appendChild(square);
       });
     });
-
+    if (this.owner === "human") {
+      grid.classList.add("grid-own");
+    } else {
+      grid.classList.add("grid-enemy");
+    }
     grid.classList.add("grid");
-    body.appendChild(grid);
+    main.appendChild(grid);
   }
 }
 
@@ -142,46 +228,12 @@ function playGame() {
   const boardB = new Gameboard("AI");
   placeShips(boardA);
   console.log(boardA.grid);
-  // console.log(boardA.shipsList);
-  // boardA.placeShip(2, [5, 7], [6, 7]);
-  // boardA.placeShip(3, [1, 4], [1, 6]);
-  // boardA.placeShip(3, [3, 5], [3, 8]);
-  // // boardA.placeShip(4, [8, 3], [8, 6]);
-  // console.log(boardA.grid);
-  // boardB.placeShip(2, [4, 1], [5, 1]);
-  // boardB.placeShip(3, [5, 7], [5, 9]);
-  // boardB.placeShip(4, [2, 3], [2, 6]);
+
+  cleanPlaceDom();
 
   boardA.drawGrid();
   boardB.drawGrid();
-  /*
-  while (boardA.lostGame === false && boardB.lostGame === false) {
-    boardB.receiveAttack();
-    boardA.receiveAttack();
-  }
- */
-
-  // boardA.receiveAttack(5, 7);
-  // boardA.receiveAttack(6, 7);
-  // console.log(boardA.shipsList);
-  //console.log(boardA);
-  // boardA.receiveAttack(1, 4);
-  // boardA.drawGrid();
+  boardB.randomizePlacement();
 }
 
-/*
-const testShip = new Ship();
-const board = new Gameboard();
-board.createGrid();
-board.placeShip(3, [1, 3], [3, 3]);
-//board.#id;
-testShip.hit();
-console.log(testShip.shipID);
-console.log(testShip.msg);
-
-console.log(board.grid);
-console.log(testShip.shipID);
-const testShip1 = new Ship();
-console.log(testShip1.shipID);
-*/
 export { Ship, Gameboard, Player, playGame };

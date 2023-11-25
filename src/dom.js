@@ -198,4 +198,11 @@ function placeShips(board) {
   });
 }
 
-export { createDom, prepareShips, placeShips };
+function cleanPlaceDom() {
+  const main = document.querySelector(".main");
+  while (main.firstChild) {
+    main.removeChild(main.firstChild);
+  }
+}
+
+export { createDom, prepareShips, placeShips, cleanPlaceDom };

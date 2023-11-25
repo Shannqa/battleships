@@ -37,6 +37,7 @@ body {
   row-gap: 0px;
   justify-items: stretch;
   font-size: 12px;
+  margin: 0 12px;
 }
 
 .square {
@@ -135,4 +136,8 @@ body {
 
 .own-ship {
   background: #1253d6;
+}
+
+.grid-enemy > div {
+  background-color: rgb(56 9 135);
 }
