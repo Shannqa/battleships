@@ -140,7 +140,7 @@ class Gameboard {
           [endRow, startCol],
         ];
       } else {
-        return generateCoords(length);
+        return generateCoords(shipLength); // here it puts 0
       }
     }
 
