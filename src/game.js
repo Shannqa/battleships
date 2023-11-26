@@ -1,4 +1,4 @@
-import { placeShips, cleanPlaceDom } from "./dom.js";
+import { placeShips, cleanPlaceDom, placementError } from "./dom.js";
 
 const possibleScore = 15;
 
@@ -98,7 +98,7 @@ class Gameboard {
         [coords[0][0], coords[0][1]],
         [coords[1][0], coords[1][1]]
       );
-      console.log(this.grid);
+      // console.log(this.grid);
     }
   }
 
@@ -173,7 +173,7 @@ class Gameboard {
 
   // check if any square of the new ship is already occupied; if so, send info to previous functions to generate new ship coordinates instead
   checkIfOccupied(fullCoordinates) {
-    console.log(fullCoordinates);
+    // console.log(fullCoordinates);
     for (let i = 0; i < fullCoordinates.length; i++) {
       let coord = fullCoordinates[i];
       if (this.grid[parseInt(coord[0])][parseInt(coord[1])] !== null) {
@@ -237,7 +237,11 @@ function playGame() {
   const boardA = new Gameboard("human");
   const boardB = new Gameboard("AI");
 
-  placeShips(boardA);
+  let checkPlaced = placeShips(boardA);
+  if (checkPlaced === true) {
+    console.log("truee");
+    return placementError();
+  }
   cleanPlaceDom();
   boardA.drawGrid();
   boardB.getRandomPlacement();

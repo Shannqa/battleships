@@ -153,7 +153,7 @@ function areAllShipsPlaced() {
     const startGame = document.createElement("button");
     startGame.textContent = "Start game";
     startGame.classList.add("start-game");
-    startGame.addEventListener("click", checkplacedShips);
+    startGame.addEventListener("click", checkPlacedShips);
     const placeInfo = document.querySelector(".place-info");
     const placeInfoSp2 = document.createElement("p");
     placeInfoSp2.textContent =
@@ -165,38 +165,65 @@ function areAllShipsPlaced() {
 }
 
 // +++ check if all ships are placed correctly
-function checkplacedShips() {
+function checkPlacedShips() {
   playGame();
-  ///
+}
+
+function placementError() {
+  const placeShips = document.querySelector(".place-ships");
+  const errorMsg = document.createElement("div");
+  errorMsg.classList.add("error-msg");
+  errorMsg.textContent =
+    "Some ships don't fit on the board or overlap. Use drag & drop to move them or double click to rotate them before you can begin the game.";
+  placeShips.appendChild(errorMsg);
 }
 
 // place ships on the player's board
 function placeShips(board) {
   // get placed ships coords
   const shipLengths = [2, 3, 4, 5];
-  shipLengths.forEach((item, index) => {
-    const ship = document.querySelector(`#to-place-${index}`);
+  const fullShips = [];
+
+  for (let i = 0; i < shipLengths.length; i++) {
+    const ship = document.querySelector(`#to-place-${i}`);
     const coordStart = ship.parentNode.id;
     coordStart.split("");
     let startRow = parseInt(coordStart[1]);
     let startColumn = parseInt(coordStart[3]);
-    let length = parseInt(item);
+    let length = parseInt(shipLengths[i]);
+    let endRow = startRow + length - 1;
+    let endColumn = startColumn + length - 1;
+    let fullCoords;
     if (ship.classList.contains("flex-toggle")) {
-      // ship is vertical
-      board.placeShip(
-        length,
+      //ship is vertical
+      if (endRow > 9) {
+        return true;
+      }
+      fullCoords = board.getFullCoords([
         [startRow, startColumn],
-        [startRow, startColumn + length - 1]
-      );
+        [endRow, startColumn],
+      ]);
+      if (board.checkIfOccupied(fullCoords) == true) {
+        console.log("ayyy");
+        return true;
+      }
+      board.placeShip(length, [startRow, startColumn], [endRow, startColumn]);
     } else {
       // ship is horizontal
-      board.placeShip(
-        length,
+      if (endColumn > 9) {
+        return true;
+      }
+      fullCoords = board.getFullCoords([
         [startRow, startColumn],
-        [startRow, startColumn + length - 1]
-      );
+        [startRow, endColumn],
+      ]);
+      if (board.checkIfOccupied(fullCoords) == true) {
+        console.log("ayyy");
+        return true;
+      }
+      board.placeShip(length, [startRow, startColumn], [startRow, endColumn]);
     }
-  });
+  }
 }
 
 function cleanPlaceDom() {
@@ -206,4 +233,4 @@ function cleanPlaceDom() {
   }
 }
 
-export { createDom, prepareShips, placeShips, cleanPlaceDom };
+export { createDom, prepareShips, placeShips, cleanPlaceDom, placementError };
