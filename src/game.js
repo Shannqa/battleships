@@ -55,18 +55,30 @@ class Gameboard {
     this.grid[coordsEnd[0]][coordsEnd[1]] = id;
   }
 
-  receiveAttack(coordsX, coordsY) {
-    let id = this.grid[coordsX][coordsY];
+  // attack(coords) {
+  //   this.receiveAttack(coords);
+
+  // }
+
+  receiveAttack(coords) {
+    let id = this.grid[coords[0]][coords[1]];
+    console.log(id);
+    const square = document.querySelector(`#r${coords[0]}c${coords[1]}`);
+
     if (id === null) {
-      this.grid[coordsX][coordsY] = "miss";
+      this.grid[coords[0]][coords[1]] = "miss";
+      square.classList.add("enemy-miss");
     } else if (id === "miss" || id === "hit") {
+      console.log("invalid move");
       return "invalid move";
     } else {
+      square.classList.add("enemy-hit");
       let hitShip = this.shipsList[id];
-      this.grid[coordsX][coordsY] = "hit";
+      this.grid[coords[0]][coords[1]] = "hit";
       hitShip.hit();
       this.receivedHits += 1;
     }
+    console.log(this.grid);
   }
 
   checkIfLost() {
@@ -198,6 +210,14 @@ class Gameboard {
 
         square.classList.add("square");
         square.setAttribute("id", `r${rindex}c${cindex}`);
+        if (this.owner === "human") {
+          square.classList.add("square");
+        } else if (this.owner === "AI") {
+          square.classList.add("enemy-square");
+          square.addEventListener("click", () => {
+            this.receiveAttack([rindex, cindex]);
+          });
+        }
         if (typeof column == "number") {
           // console.log(column);
           if (this.owner === "human") {

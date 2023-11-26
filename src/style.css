@@ -40,11 +40,23 @@ body {
   margin: 0 12px;
 }
 
-.square {
+.square, .enemy-square {
   width: 28px;
   height: 28px;
   border: 1px #dca85d solid;
   margin: 0px;
+}
+
+.enemy-square:hover {
+  cursor: pointer;
+}
+
+.enemy-hit {
+  background-color: darkgreen;
+}
+
+.enemy-miss {
+  background-color: grey;
 }
 
 .squareB {

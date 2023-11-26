@@ -182,7 +182,6 @@ function placementError() {
 function placeShips(board) {
   // get placed ships coords
   const shipLengths = [2, 3, 4, 5];
-  const fullShips = [];
 
   for (let i = 0; i < shipLengths.length; i++) {
     const ship = document.querySelector(`#to-place-${i}`);
