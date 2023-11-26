@@ -1,15 +1,6 @@
-// possibleScore depends on the overall nr of ships and their length
-// available ships:
-// 1x 5-square
-// 1x 4-square
-// 2x 3-square
-// 2x 2-square
-// = 19 possible score
-
-//import { isNumber } from "lodash";
 import { placeShips, cleanPlaceDom } from "./dom.js";
 
-const possibleScore = 19;
+const possibleScore = 15;
 
 class Ship {
   constructor(length, id) {
@@ -46,10 +37,8 @@ class Gameboard {
   placeShip(length, coordsStart, coordsEnd) {
     const id = this.shipsList.length;
     const placedShip = new Ship(length, id);
-    // const placedShip = new Ship(length, coordsStart, coordsEnd);
-    // console.log(this.grid[coordsStart[0]][coordsStart[1]]);
-    // if the ship's length > 2, mark the other squares too
 
+    // if the ship's length > 2, mark the other squares too
     this.shipsList.push(placedShip);
     if (coordsStart[0] !== coordsEnd[0]) {
       for (let i = coordsStart[0]; i <= coordsEnd[0]; i++) {
@@ -83,7 +72,6 @@ class Gameboard {
   checkIfLost() {
     if (this.receivedHits >= possibleScore) {
       this.lostGame = true;
-
       return true;
     }
     return false;
@@ -100,7 +88,34 @@ class Gameboard {
     return gridArray;
   }
 
-  generateNewCoords(shipLength) {
+  // generate random ships and place them on the enemy board
+  getRandomPlacement() {
+    for (let i = this.shipLengths.length - 1; i >= 0; i--) {
+      const shipL = parseInt(this.shipLengths[i]);
+      let coords = this.getNewCoords(shipL);
+      this.placeShip(
+        shipL,
+        [coords[0][0], coords[0][1]],
+        [coords[1][0], coords[1][1]]
+      );
+      console.log(this.grid);
+    }
+  }
+
+  // runs functions generating and checking if new coords are valid, returns coords for one ship or uses recursion to start over the process if coords are invalid
+  getNewCoords(shipLength) {
+    let coords = this.randomizeCoords(parseInt(shipLength));
+    let fullCoords = this.getFullCoords(coords);
+    let coordCheck = this.checkIfOccupied(fullCoords);
+    if (coordCheck === false) {
+      return coords;
+    } else {
+      return this.getNewCoords(parseInt(shipLength));
+    }
+  }
+
+  // uses math.random to get random coordinates on the board, randomize wheter the new ship will be vertical or horizontal, calculate that it fits on the board according to the ships length
+  randomizeCoords(shipLength) {
     const startRow = Math.floor(Math.random() * 10);
     const startCol = Math.floor(Math.random() * 10);
     const endRow = startRow + parseInt(shipLength) - 1;
@@ -131,34 +146,11 @@ class Gameboard {
         [endRow, startCol],
       ];
     } else {
-      return this.generateNewCoords(shipLength);
+      return this.randomizeCoords(shipLength);
     }
   }
 
-  randomizePlacement() {
-    for (let i = this.shipLengths.length - 1; i >= 0; i--) {
-      const shipL = parseInt(this.shipLengths[i]);
-      let coords = this.genCoo(shipL);
-      this.placeShip(
-        shipL,
-        [coords[0][0], coords[0][1]],
-        [coords[1][0], coords[1][1]]
-      );
-      console.log(this.grid);
-    }
-  }
-
-  genCoo(shipLength) {
-    let coords = this.generateNewCoords(parseInt(shipLength));
-    let fullCoords = this.getFullCoords(coords);
-    let coordCheck = this.checkIfOccupied(fullCoords);
-    if (coordCheck === false) {
-      return coords;
-    } else {
-      return this.genCoo(parseInt(shipLength));
-    }
-  }
-
+  // gets full coordinates of every square in a single ship
   getFullCoords(coords) {
     let rowStart = parseInt(coords[0][0]);
     let colStart = parseInt(coords[0][1]);
@@ -176,11 +168,10 @@ class Gameboard {
         fullCoordinates.push([rowStart, i]);
       }
     }
-    // console.log(fullCoordinates);
     return fullCoordinates;
   }
 
-  // check if a square on the board is already occupied
+  // check if any square of the new ship is already occupied; if so, send info to previous functions to generate new ship coordinates instead
   checkIfOccupied(fullCoordinates) {
     console.log(fullCoordinates);
     for (let i = 0; i < fullCoordinates.length; i++) {
@@ -190,7 +181,6 @@ class Gameboard {
         return true;
       }
     }
-    console.log("unoccupied");
     return false;
   }
 
@@ -246,14 +236,11 @@ function playGame() {
   const playerB = new Player("AI");
   const boardA = new Gameboard("human");
   const boardB = new Gameboard("AI");
+
   placeShips(boardA);
-  // console.log(boardA.grid);
-
   cleanPlaceDom();
-
   boardA.drawGrid();
-
-  boardB.randomizePlacement();
+  boardB.getRandomPlacement();
   boardB.drawGrid();
   console.log(boardB.grid);
 }
