@@ -6,8 +6,8 @@
 // 2x 2-square
 // = 19 possible score
 
-import { isNumber } from "lodash";
-import { placeShips, cleanPlaceDom } from "./dom";
+//import { isNumber } from "lodash";
+import { placeShips, cleanPlaceDom } from "./dom.js";
 
 const possibleScore = 19;
 
@@ -234,7 +234,7 @@ class Gameboard {
 
         square.classList.add("square");
         square.setAttribute("id", `r${rindex}c${cindex}`);
-        if (isNumber(column)) {
+        if (typeof column == "number") {
           // console.log(column);
           if (this.owner === "human") {
             square.classList.add("own-ship");

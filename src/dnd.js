@@ -6,7 +6,7 @@ const div1 = document.createElement("div");
 const div2 = document.createElement("div");
 
 function allowDrop(event) {
-  event.preventDrfault();
+  event.preventDefault();
 }
 
 function drag(event) {
