@@ -113,44 +113,46 @@ class Gameboard {
         return [
           [startRow, startCol],
           [startRow, endCol],
-          ];
+        ];
       } else {
         return [
           [startRow, startCol],
           [endRow, startCol],
-          ];
+        ];
       }
     } else if (endCol < 10) {
       return [
         [startRow, startCol],
         [startRow, endCol],
-        ];
+      ];
     } else if (endRow < 10) {
       return [
         [startRow, startCol],
         [endRow, startCol],
-        ];
+      ];
     } else {
-      return this. generateNewCoords(shipLength);
+      return this.generateNewCoords(shipLength);
     }
   }
-  
+
   randomizePlacement() {
     for (let i = this.shipLengths.length - 1; i >= 0; i--) {
       const shipL = parseInt(this.shipLengths[i]);
-      this.genCoo(shipL);
-        this.placeShip(
+      let coords = this.genCoo(shipL);
+      this.placeShip(
         shipL,
         [coords[0][0], coords[0][1]],
         [coords[1][0], coords[1][1]]
       );
+      console.log(this.grid);
     }
   }
-  
+
   genCoo(shipLength) {
     let coords = this.generateNewCoords(parseInt(shipLength));
     let fullCoords = this.getFullCoords(coords);
-    if (this.checkIfOccupied(fullCoords) === false) {
+    let coordCheck = this.checkIfOccupied(fullCoords);
+    if (coordCheck === false) {
       return coords;
     } else {
       return this.genCoo(parseInt(shipLength));
@@ -174,19 +176,22 @@ class Gameboard {
         fullCoordinates.push([rowStart, i]);
       }
     }
-      // console.log(fullCoordinates);
+    // console.log(fullCoordinates);
     return fullCoordinates;
   }
 
   // check if a square on the board is already occupied
   checkIfOccupied(fullCoordinates) {
-    fullCoordinates.forEach((coord) => {
+    console.log(fullCoordinates);
+    for (let i = 0; i < fullCoordinates.length; i++) {
+      let coord = fullCoordinates[i];
       if (this.grid[parseInt(coord[0])][parseInt(coord[1])] !== null) {
         console.log("check - occupied");
         return true;
       }
-      return false;
-    });
+    }
+    console.log("unoccupied");
+    return false;
   }
 
   drawGrid() {
