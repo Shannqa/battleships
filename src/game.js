@@ -40,6 +40,7 @@ class Gameboard {
     this.shipsList = [];
     this.receivedHits = 0;
     this.lostGame = false;
+    this.shipLengths = [2, 3, 4, 5];
   }
 
   placeShip(length, coordsStart, coordsEnd) {
@@ -99,120 +100,88 @@ class Gameboard {
     return gridArray;
   }
 
-  randomizePlacement() {
-    const shipLengths = [2, 3, 4, 5];
-    let grrr = this.grid;
-    let putShip = this.placeShip;
-    let list = this.shipsList;
-    // this.placeShip();
+  generateNewCoords(shipLength) {
+    const startRow = Math.floor(Math.random() * 10);
+    const startCol = Math.floor(Math.random() * 10);
+    const endRow = startRow + parseInt(shipLength) - 1;
+    const endCol = startCol + parseInt(shipLength) - 1;
 
-    // recursive function to geenerate coordinates of AI's ships
-    // here ships may overlap
-
-    //something's wrong - start and end coords are the same!
-    function generateCoords(shipLength) {
-      const shipLengthInt = parseInt(shipLength);
-      const startRow = Math.floor(Math.random() * 10);
-      const startCol = Math.floor(Math.random() * 10);
-      const endRow = startRow + shipLength - 1;
-      const endCol = startCol + shipLength - 1;
-      let endCoord;
-      if (endRow < 10 && endCol < 10) {
-        //randomize - horizontal or vertical
-        let chance = Math.random() * 1;
-        if (chance < 0.5) {
-          return [
-            [startRow, startCol],
-            [startRow, endCol],
-          ];
-        } else {
-          return [
-            [startRow, startCol],
-            [endRow, startCol],
-          ];
-        }
-      } else if (endCol < 10) {
+    if (endRow < 10 && endCol < 10) {
+      //randomize - horizontal or vertical
+      let chance = Math.random() * 1;
+      if (chance < 0.5) {
         return [
           [startRow, startCol],
           [startRow, endCol],
-        ];
-      } else if (endRow < 10) {
+          ];
+      } else {
         return [
           [startRow, startCol],
           [endRow, startCol],
+          ];
+      }
+    } else if (endCol < 10) {
+      return [
+        [startRow, startCol],
+        [startRow, endCol],
         ];
-      } else {
-        return generateCoords(shipLength);
-      }
+    } else if (endRow < 10) {
+      return [
+        [startRow, startCol],
+        [endRow, startCol],
+        ];
+    } else {
+      return this. generateNewCoords(shipLength);
     }
-
-    for (let i = shipLengths.length - 1; i >= 0; i--) {
-      const length = parseInt(shipLengths[i]);
-      let coords = generateCoords(length);
-      let fullCoords = getFullCoords(coords);
-      //if a square is already occupied, generate new coords
-      while (this.checkIfOccupied(fullCoords) === true) {
-        coords = generateCoords(length);
-        fullCoords = getFullCoords(coords);
-      }
-
-      this.placeShip(
-        length,
+  }
+  
+  randomizePlacement() {
+    for (let i = this.shipLengths.length - 1; i >= 0; i--) {
+      const shipL = parseInt(this.shipLengths[i]);
+      this.genCoo(shipL);
+        this.placeShip(
+        shipL,
         [coords[0][0], coords[0][1]],
         [coords[1][0], coords[1][1]]
       );
-
-      // console.log(
-      //   length,
-      //   [coords[0][0], coords[0][1]],
-      //   [coords[1][0], coords[1][1]]
-      // );
-      // console.log(this.grid);
     }
+  }
+  
+  genCoo(shipLength) {
+    let coords = this.generateNewCoords(parseInt(shipLength));
+    let fullCoords = this.getFullCoords(coords);
+    if (this.checkIfOccupied(fullCoords) === false) {
+      return coords;
+    } else {
+      return this.genCoo(parseInt(shipLength));
+    }
+  }
 
-    // function checkCoordsOnBoard(coords, length) {
-    //   putShip(
-    //     length,
-    //     [coords[0][0], coords[0][1]],
-    //     [coords[1][0], coords[1][1]]
-    //   );
-    //   console.log(
-    //     length,
-    //     [coords[0][0], coords[0][1]],
-    //     [coords[1][0], coords[1][1]]
-    //   );
-    //   console.log(list.length);
-    //   console.log(grrr);
-    // }
+  getFullCoords(coords) {
+    let rowStart = parseInt(coords[0][0]);
+    let colStart = parseInt(coords[0][1]);
+    let rowEnd = parseInt(coords[1][0]);
+    let colEnd = parseInt(coords[1][1]);
 
-    //check if proposed ship's coordinates are not already occupied on the grid
-    // get full coordinates of a proposed ship
-    function getFullCoords(coords) {
-      let rowStart = coords[0][0];
-      let colStart = coords[0][1];
-      let rowEnd = coords[1][0];
-      let colEnd = coords[1][1];
-
-      let fullCoordinates = [];
-      if (rowStart !== rowEnd) {
-        for (let i = rowStart; i <= rowEnd; i++) {
-          fullCoordinates.push([i, colStart]);
-        }
+    let fullCoordinates = [];
+    if (rowStart !== rowEnd) {
+      for (let i = rowStart; i <= rowEnd; i++) {
+        fullCoordinates.push([i, colStart]);
       }
-      if (colStart !== colEnd) {
-        for (let i = colStart; i <= colEnd; i++) {
-          fullCoordinates.push([rowStart, i]);
-        }
+    }
+    if (colStart !== colEnd) {
+      for (let i = colStart; i <= colEnd; i++) {
+        fullCoordinates.push([rowStart, i]);
       }
+    }
       // console.log(fullCoordinates);
-      return fullCoordinates;
-    }
+    return fullCoordinates;
   }
 
   // check if a square on the board is already occupied
   checkIfOccupied(fullCoordinates) {
     fullCoordinates.forEach((coord) => {
-      if (this.grid[coord[0]][coord[1]] !== null) {
+      if (this.grid[parseInt(coord[0])][parseInt(coord[1])] !== null) {
         console.log("check - occupied");
         return true;
       }
