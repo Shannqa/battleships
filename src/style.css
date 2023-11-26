@@ -44,7 +44,6 @@ body {
   width: 28px;
   height: 28px;
   border: 1px #dca85d solid;
-  background: #234e66;
   margin: 0px;
 }
 
@@ -138,6 +137,18 @@ body {
   background: #1253d6;
 }
 
-.grid-enemy > div {
-  background-color: rgb(56 9 135);
+.grid-enemy {
+  background-color: rgb(58, 39, 104);
+}
+
+.grid-own {
+  background-color: #234e66;
+}
+
+.grid-place-own {
+  background-color: #234e66;
+}
+
+.enemy-ship {
+  background: rgb(175, 13, 40);
 }

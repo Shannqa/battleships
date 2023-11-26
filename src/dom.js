@@ -58,6 +58,7 @@ function drawGrid() {
   });
 
   grid.classList.add("grid");
+  grid.classList.add("grid-place-own");
   ownBoard.appendChild(grid);
 }
 
