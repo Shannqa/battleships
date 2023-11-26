@@ -152,3 +152,9 @@ body {
 .enemy-ship {
   background: rgb(175, 13, 40);
 }
+
+.error-msg {
+  background-color: rgb(58, 39, 104);
+  margin: 8px 0px;
+  border: 1px #dca85d solid;
+}
