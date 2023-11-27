@@ -113,6 +113,14 @@ class Gameboard {
     }
   }
 
+  playerAttack(coords) {
+    // if it's not the player's turn, clicking on enemy board will do nothing
+    if (currentPlayer === "human") {
+      this.receiveAttack(coords);
+    }
+    return;
+  }
+
   checkIfLost() {
     if (this.receivedHits >= possibleScore) {
       this.lostGame = true;
@@ -132,6 +140,15 @@ class Gameboard {
     return gridArray;
   }
 
+  AIattack() {
+    const x = Math.floor(Math.random() * 9);
+    const y = Math.floor(Math.random() * 9);
+    if (this.grid[x][y] === "hit" || this.grid[x][y] === "miss") {
+      return AIattack();
+    } else {
+      return this.receiveattack([x, y]);
+    }
+  }
   // generate random ships and place them on the enemy board
   getRandomPlacement() {
     for (let i = this.shipLengths.length - 1; i >= 0; i--) {
