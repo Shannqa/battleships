@@ -9,10 +9,16 @@ function drag(ev) {
 }
 
 function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  document.getElementById(data).classList.add("ship-on-board");
-  ev.target.appendChild(document.getElementById(data));
+  // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
+  try {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    document.getElementById(data).classList.add("ship-on-board");
+    ev.target.appendChild(document.getElementById(data));
+  } catch {
+    console.log("error - drag&drop");
+    return;
+  }
 }
 
 function dragEnd(ev) {
@@ -40,7 +46,7 @@ function drawGrid() {
   array.forEach((row, rindex) => {
     row.forEach((cell, cindex) => {
       const square = document.createElement("div");
-      square.classList.add("square");
+      square.classList.add("prep-square");
       square.setAttribute("id", `r${rindex}c${cindex}`);
       if (cell === "ship") {
         square.classList.add("ship");
@@ -112,8 +118,8 @@ function prepareShips() {
         shipSq.classList.add("sq0-to-place");
       }
 
-      shipSq.classList.add("square");
-      shipSq.classList.add("own-ship");
+      shipSq.classList.add("prep-square");
+      shipSq.classList.add("ship");
 
       shipDiv.appendChild(shipSq);
     }
@@ -203,7 +209,7 @@ function placeShips(board) {
         [endRow, startColumn],
       ]);
       if (board.checkIfOccupied(fullCoords) == true) {
-        console.log("ayyy");
+        // console.log("ayyy");
         return true;
       }
       board.placeShip(length, [startRow, startColumn], [endRow, startColumn]);
@@ -217,7 +223,7 @@ function placeShips(board) {
         [startRow, endColumn],
       ]);
       if (board.checkIfOccupied(fullCoords) == true) {
-        console.log("ayyy");
+        // console.log("ayyy");
         return true;
       }
       board.placeShip(length, [startRow, startColumn], [startRow, endColumn]);

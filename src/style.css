@@ -40,7 +40,7 @@ body {
   margin: 0 12px;
 }
 
-.square, .enemy-square {
+.own-square, .enemy-square, .prep-square {
   width: 28px;
   height: 28px;
   border: 1px #dca85d solid;
@@ -51,25 +51,26 @@ body {
   cursor: pointer;
 }
 
-.enemy-hit {
+.enemy-square.hit {
   background-color: darkgreen;
 }
 
-.enemy-miss {
+.enemy-square.miss {
   background-color: grey;
 }
 
-.squareB {
-  background: #234e66;
-}
-
-.miss {
+.own-square.miss {
   background-color: grey;
 }
 
-.hit {
+.own-square.hit {
   background-color: rgb(255, 98, 205);
 }
+
+.own-square.ship, .prep-square.ship{
+  background-color: #1253d6;
+}
+
 
 #div1 {
   width: 350px;
