@@ -9,10 +9,16 @@ function drag(ev) {
 }
 
 function drop(ev) {
-  ev.preventDefault();
-  var data = ev.dataTransfer.getData("text");
-  document.getElementById(data).classList.add("ship-on-board");
-  ev.target.appendChild(document.getElementById(data));
+  // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
+  try {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    document.getElementById(data).classList.add("ship-on-board");
+    ev.target.appendChild(document.getElementById(data));
+  } catch {
+    console.log("error - drag&drop");
+    return;
+  }
 }
 
 function dragEnd(ev) {

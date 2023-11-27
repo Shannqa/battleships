@@ -1,5 +1,6 @@
 import { placeShips, cleanPlaceDom, placementError } from "./dom.js";
 
+let currentPlayer = null;
 const possibleScore = 15;
 
 class Ship {
@@ -50,29 +51,27 @@ class Gameboard {
         this.grid[coordsStart[0]][i] = id;
       }
     }
-
     this.grid[coordsStart[0]][coordsStart[1]] = id;
     this.grid[coordsEnd[0]][coordsEnd[1]] = id;
   }
 
-  // attack(coords) {
-  //   this.receiveAttack(coords);
-
-  // }
-
   receiveAttack(coords) {
+    let square;
     let id = this.grid[coords[0]][coords[1]];
     console.log(id);
-    const square = document.querySelector(`#r${coords[0]}c${coords[1]}`);
-
+    if (currentPlayer === "human") {
+      square = document.querySelector(`.enemy-square#r${coords[0]}c${coords[1]}`);
+    } else if (currentPlayer === "AI") {
+      square = document.querySelector(`.own-square#r${coords[0]}c${coords[1]}`);
+    }
     if (id === null) {
       this.grid[coords[0]][coords[1]] = "miss";
-      square.classList.add("enemy-miss");
+      square.classList.add(".miss");
     } else if (id === "miss" || id === "hit") {
       console.log("invalid move");
       return "invalid move";
     } else {
-      square.classList.add("enemy-hit");
+      square.classList.add("hit");
       let hitShip = this.shipsList[id];
       this.grid[coords[0]][coords[1]] = "hit";
       hitShip.hit();
@@ -80,6 +79,15 @@ class Gameboard {
     }
     console.log(this.grid);
   }
+  
+  playerAttack(coords) {
+    // if it's not the player's turn, clicking on enemy board will do nothing
+    if (currentPlayer === "human") {
+      this.receiveAttack(coords);
+    }
+    return;
+  }
+  
 
   checkIfLost() {
     if (this.receivedHits >= possibleScore) {
@@ -100,6 +108,15 @@ class Gameboard {
     return gridArray;
   }
 
+  AIattack() {
+    const x = Math.floor(Math.random() * 9);
+    const y = Math.floor(Math.random() * 9);
+    if (this.grid[x][y] === "hit" || this.grid[x][y] === "miss") {
+      return AIattack();
+    } else {
+      return this.receiveattack([x, y]);
+    }
+  }
   // generate random ships and place them on the enemy board
   getRandomPlacement() {
     for (let i = this.shipLengths.length - 1; i >= 0; i--) {
@@ -207,15 +224,13 @@ class Gameboard {
     array.forEach((row, rindex) => {
       row.forEach((column, cindex) => {
         const square = document.createElement("div");
-
-        square.classList.add("square");
         square.setAttribute("id", `r${rindex}c${cindex}`);
         if (this.owner === "human") {
-          square.classList.add("square");
+          square.classList.add("own-square");
         } else if (this.owner === "AI") {
           square.classList.add("enemy-square");
           square.addEventListener("click", () => {
-            this.receiveAttack([rindex, cindex]);
+            this.playerAttack([rindex, cindex]);
           });
         }
         if (typeof column == "number") {
@@ -223,9 +238,11 @@ class Gameboard {
           if (this.owner === "human") {
             square.classList.add("own-ship");
           } else {
+            // remove marking of enemy ships in the final version of the game
             square.classList.add("enemy-ship");
           }
         }
+        // check if those two ifs are needed, possibly remove
         if (column === "miss") {
           square.classList.add("miss");
         }
@@ -267,6 +284,23 @@ function playGame() {
   boardB.getRandomPlacement();
   boardB.drawGrid();
   console.log(boardB.grid);
+  currentPlayer = "human";
+
+  
 }
+
+// function gameLoop() {
+  
+   
+    
+ //}
+  // wait for players attack...
+  // after player clicks on a square sending an attack, run receive attack on enemy board
+  // block the possibility of user attacking
+  // generate random hit of the ai
+  // run receive attack on human board
+  // enable listeners on enemy board
+  // wait for player to attack...
+//}
 
 export { Ship, Gameboard, Player, playGame };
