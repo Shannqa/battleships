@@ -1,7 +1,10 @@
 import { placeShips, cleanPlaceDom, placementError } from "./dom.js";
 
 let currentPlayer = null;
-const possibleScore = 15;
+const boards = {
+  human: null,
+  AI: null
+}
 
 class Ship {
   constructor(length, id) {
@@ -85,12 +88,14 @@ class Gameboard {
       this.grid[coords[0]][coords[1]] = "hit";
       hitShip.hit();
       this.receivedHits += 1;
+      this.checkIfLost();
     }
-    console.log("owner: " + this.owner);
-    console.log(this.grid);
+
+    console.log("owner: " + this.owner, "hits: " + this.receivedHits);
+    //console.log(this.grid);
     //if it's AI's turn now, send an attack
     if (currentPlayer === "AI") {
-      this.AIattack();
+      boards.human.AIattack();
     }
     // console.log(this.grid);
   }
@@ -98,7 +103,7 @@ class Gameboard {
   playerAttack(coords) {
     // if it's not the player's turn, clicking on enemy board will do nothing
     if (currentPlayer === "human") {
-      this.receiveAttack(coords);
+      boards.AI.receiveAttack(coords);
     }
     return;
   }
@@ -116,14 +121,16 @@ class Gameboard {
   playerAttack(coords) {
     // if it's not the player's turn, clicking on enemy board will do nothing
     if (currentPlayer === "human") {
-      this.receiveAttack(coords);
+      boards.AI.receiveAttack(coords);
     }
     return;
   }
 
   checkIfLost() {
+    const possibleScore = this.shipLengths.reduce((previous, current, initial) => previous + current, 0);
     if (this.receivedHits >= possibleScore) {
       this.lostGame = true;
+      console.log("game lost: " + this.owner);
       return true;
     }
     return false;
@@ -140,15 +147,6 @@ class Gameboard {
     return gridArray;
   }
 
-  AIattack() {
-    const x = Math.floor(Math.random() * 9);
-    const y = Math.floor(Math.random() * 9);
-    if (this.grid[x][y] === "hit" || this.grid[x][y] === "miss") {
-      return AIattack();
-    } else {
-      return this.receiveattack([x, y]);
-    }
-  }
   // generate random ships and place them on the enemy board
   getRandomPlacement() {
     for (let i = this.shipLengths.length - 1; i >= 0; i--) {
@@ -319,6 +317,26 @@ function playGame() {
   currentPlayer = "human";
 }
 
+function playTestGame() {
+  const playerA = new Player("human");
+  const playerB = new Player("AI");
+  boards.human = new Gameboard("human");
+  boards.AI = new Gameboard("AI");
+
+  cleanPlaceDom();
+  boards.human.getRandomPlacement();
+
+  boards.human.drawGrid();
+  boards.AI.getRandomPlacement();
+  boards.AI.drawGrid();
+  // console.log(boardB.grid);
+  currentPlayer = "human";
+}
+
+function AImove() {
+  boardA.AIattack();
+}
+
 // function gameLoop() {
 
 //}
@@ -331,4 +349,4 @@ function playGame() {
 // wait for player to attack...
 //}
 
-export { Ship, Gameboard, Player, playGame };
+export { Ship, Gameboard, Player, playGame, playTestGame };
