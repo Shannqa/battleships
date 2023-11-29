@@ -3,7 +3,7 @@ import { Player, Gameboard, playGame, playTestGame } from "./game.js";
 //import css from "./style.css";
 
 createDom();
-// prepareShips();
+prepareShips();
 
 
-playTestGame();
+//playTestGame();

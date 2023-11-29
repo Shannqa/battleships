@@ -3,7 +3,8 @@ import { placeShips, cleanPlaceDom, placementError } from "./dom.js";
 let currentPlayer = null;
 const boards = {
   human: null,
-  AI: null
+  AI: null,
+  prep: null
 }
 
 class Ship {
@@ -262,6 +263,9 @@ class Gameboard {
           square.addEventListener("click", () => {
             this.playerAttack([rindex, cindex]);
           });
+        } else if (this.owner === "prepare") {
+          square.classList.add("prep-square");
+
         }
         if (typeof column == "number") {
           // console.log(column);
@@ -282,13 +286,24 @@ class Gameboard {
         grid.appendChild(square);
       });
     });
+    
+
     if (this.owner === "human") {
       grid.classList.add("grid-own");
-    } else {
+      main.appendChild(grid);
+
+    } else if (this.owner === "AI") {
       grid.classList.add("grid-enemy");
+      main.appendChild(grid);
+
+    } else if (this.owner === "prepare") {
+      console.log("preppy");
+      grid.classList.add("grid-prep");
+      const prepBoard = document.querySelector(".prep-board");
+      prepBoard.appendChild(grid);
     }
+    
     grid.classList.add("grid");
-    main.appendChild(grid);
   }
 }
 
@@ -349,4 +364,4 @@ function AImove() {
 // wait for player to attack...
 //}
 
-export { Ship, Gameboard, Player, playGame, playTestGame };
+export { Ship, Gameboard, Player, playGame, playTestGame, boards };

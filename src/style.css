@@ -153,7 +153,7 @@ body {
   background-color: rgb(58, 39, 104);
 }
 
-.grid-own {
+.grid-own, .grid-prep {
   background-color: #234e66;
 }
 
