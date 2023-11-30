@@ -1,4 +1,4 @@
-import { Gameboard, Player, playGame, players } from "./game.js";
+import { Gameboard, players, getPlayers } from "./game.js";
 
 function createDom() {
   const body = document.querySelector("body");
@@ -39,7 +39,7 @@ function drop(ev) {
   }
 }
 
-function dragEnd(ev) {
+function dragEnd() {
   areAllShipsPlaced();
 }
 
@@ -53,17 +53,31 @@ function prepareShips() {
   const prepShipsList = document.createElement("div");
   const prepInfoDiv = document.createElement("div");
   const prepInfoP = document.createElement("p");
+  const startGame = document.createElement("button");
+  const prepInfoP2 = document.createElement("p");
+  const errorMsg = document.createElement("div");
 
-  prepBoardDiv.classList.add("prep-board");
-  prepShipsDiv.classList.add("prep-ships");
+  prepBoardDiv.classList.add("prep-board-div");
+  prepShipsDiv.classList.add("prep-ships-div");
   prepShipsList.classList.add("prep-ships-list");
   prepInfoDiv.classList.add("prep-info");
+  startGame.classList.add("start-game");
+  startGame.classList.add("hidden");
+  prepInfoP2.classList.add("prep-info-p2");
+  prepInfoP2.classList.add("hidden");
+  errorMsg.classList.add("error-msg");
+  errorMsg.classList.add("hidden");
 
+  errorMsg.textContent =
+    "Some ships don't fit on the board or overlap. Use drag & drop to move them or double click to rotate them before you can begin the game.";
+  startGame.textContent = "Start game";
+  startGame.addEventListener("click", checkPlacements);
   prepBoardTitle.textContent = "Your board";
   prepShipsTitle.textContent = "Place your ships";
   prepInfoP.textContent =
-    "Drag & drop the ships on thw2e board. Doubleclick a ship to rotate it.";
-
+    "Drag & drop the ships on the board. Double-click a ship to rotate it.";
+  prepInfoP2.textContent =
+    "Once you're happy with the placement of your ships, click the start button to begin the game!";
   /* List of ships to be placed */
   Gameboard.shipLengths.forEach((item, index) => {
     const fullShip = document.createElement("div");
@@ -78,7 +92,7 @@ function prepareShips() {
       shipSq.classList.add("ship");
       fullShip.appendChild(shipSq);
     }
-    
+
     /* Drag and drop */
     fullShip.setAttribute("id", `prep-${index}`);
     fullShip.setAttribute("draggable", "true");
@@ -87,75 +101,78 @@ function prepareShips() {
     fullShip.addEventListener("dblclick", () => {
       fullShip.classList.toggle("flex-toggle");
     });
-    prepShipsDiv.appendChild(prepShipsList);
+    prepShipsList.appendChild(fullShip);
   });
 
   prepBoardDiv.appendChild(prepBoardTitle);
   prepShipsDiv.appendChild(prepShipsTitle);
   prepShipsDiv.appendChild(prepShipsList);
   prepInfoDiv.appendChild(prepInfoP);
+  prepInfoDiv.appendChild(startGame);
+  prepInfoDiv.appendChild(prepInfoP2);
   prepShipsDiv.appendChild(prepInfoDiv);
+  prepShipsDiv.appendChild(errorMsg);
   main.appendChild(prepBoardDiv);
   main.appendChild(prepShipsDiv);
-  
+
   players.prepare.board.drawGrid();
+  const prepSquare = document.querySelectorAll(".prep-square");
+  prepSquare.forEach((square) => {
+    square.addEventListener("drop", drop);
+    square.addEventListener("dragover", allowDrop);
+  });
 }
 
 // check if all ships were placed on the player's board
 function areAllShipsPlaced() {
-  const prepShipsDiv = document.querySelector(".prep-ships");
   const prepShipsList = document.querySelector(".prep-ships-list");
-  const prepInfo = document.querySelector(".prep-info");
 
   if (prepShipsList.childNodes.length === 0) {
-    const startGame = document.createElement("button");
-    startGame.textContent = "Start game";
-    startGame.classList.add("start-game");
-    startGame.addEventListener("click", checkPlacedShips);
-    const prepInfoP2 = document.createElement("p");
-    prepInfoP2.textContent =
-      "Once you're happy with the placement of your ships, click the start button to begin the game!";
-    prepInfo.appendChild(startGame);
-    prepInfo.appendChild(prepInfoP2);
-    prepShips.appendChild(prepInfo);
+    const startGame = document.querySelector(".start-game");
+    const prepInfoP2 = document.querySelector(".prep-info-p2");
+    startGame.classList.remove("hidden");
+    prepInfoP2.classList.remove("hidden");
   }
 }
 
 // check if all ships are placed correctly, if so, start the game
 function checkPlacements() {
   const placeOnBoard = placeShips(players.human.board);
-  
+
   if (placeOnBoard === false) {
-    return placementError();
+    const errorMsg = document.querySelector(".error-msg");
+    errorMsg.classList.remove("hidden");
+    return;
   }
-  cleanPlaceDom();
+  const prepBoardDiv = document.querySelector(".prep-board-div");
+  const prepShipsDiv = document.querySelector(".prep-ships-div");
+  prepBoardDiv.classList.add("hidden");
+  prepShipsDiv.classList.add("hidden");
+
   players.human.board.drawGrid();
   players.AI.board.getRandomPlacement();
   players.AI.board.drawGrid();
   // console.log(boardB.grid);
-  players.currentPlayer = "human";
+  players.current = "human";
 }
 
 function placementError() {
-  const prepShipsDiv = document.querySelector(".prep-ships");
-  const errorMsg = document.createElement("div");
-  errorMsg.classList.add("error-msg");
-  errorMsg.textContent =
-    "Some ships don't fit on the board or overlap. Use drag & drop to move them or double click to rotate them before you can begin the game.";
-  prepShipsDiv.appendChild(errorMsg);
+  const prepShipsDiv = document.querySelector(".prep-ships-div");
+
+  e;
 }
 
 // add ships to the players gameboard
+//error: if ships at the beginning of the list are good, they get added to the grid. then, once an error happens, they stay inside the array instead of being removed
 function placeShips(board) {
   // get placed ships coords
-
   for (let i = 0; i < Gameboard.shipLengths.length; i++) {
-    const ship = document.querySelector(`#to-place-${i}`);
+    const ship = document.querySelector(`#prep-${i}`);
     const coordStart = ship.parentNode.id;
     coordStart.split("");
     let startRow = parseInt(coordStart[1]);
     let startColumn = parseInt(coordStart[3]);
-    let length = parseInt(shipLengths[i]);
+    let length = parseInt(Gameboard.shipLengths[i]);
     let endRow = startRow + length - 1;
     let endColumn = startColumn + length - 1;
     let fullCoords;
@@ -188,8 +205,8 @@ function placeShips(board) {
     }
   }
 }
-
-function cleanPlaceDom() {
+/* Clean all child nodes of .main */
+function cleanMainDom() {
   const main = document.querySelector(".main");
   while (main.firstChild) {
     main.removeChild(main.firstChild);
@@ -207,23 +224,22 @@ function gameEnd(player) {
   button.classList.add("modal-button");
   button.textContent = "Play again";
   button.addEventListener("click", playAgain);
+  players.current = null;
   if (player === "AI") {
     wonOrLost.textContent = "You won!";
   } else if (player === "human") {
     wonOrLost.textContent = "You lost";
   }
-  
+
   modal.appendChild(wonOrLost);
   modal.appendChild(button);
   main.appendChild(modal);
 }
 
-function playAgain();
-  players.human = null;
-  players.AI = null;
-  players.prepare = null;
-  players.currentPlayer = null;
-  cleanPlaceDom;
-  play();
+function playAgain() {
+  getPlayers();
+  cleanMainDom();
+  prepareShips();
+}
 
-export { createDom, prepareShips, placeShips, cleanPlaceDom, placementError, gameEnd };
+export { createDom, prepareShips, placeShips, placementError, gameEnd };

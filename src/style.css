@@ -30,6 +30,36 @@ body {
   justify-content: center;
 }
 
+.prep-board-div {
+  margin: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+}
+
+.prep-ships-div {
+  margin: 6px 24px;
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
+.prep-ships-div > span, .prep-board-div > span {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.prep-info {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sq0-prep:hover {
+  cursor: grab;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(10, 28px);
@@ -71,33 +101,6 @@ body {
   background-color: #1253d6;
 }
 
-#div1 {
-  width: 350px;
-  height: 70px;
-  padding: 10px;
-  border: 1px solid #aaaaaa;
-}
-
-.prep-board {
-  margin: 6px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 300px;
-}
-
-.prep-ships {
-  margin: 6px 24px;
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-
-.prep-ships > span, .prep-ships > span {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-}
-
 .ship-div {
   display: flex;
   margin: 4px;
@@ -112,17 +115,7 @@ body {
   background-color: rgb(56 9 135);
 }
 
-.sq0-to-place:hover {
-  cursor: grab;
-}
-
 .flex-toggle {
-  flex-direction: column;
-}
-
-.prep-info {
-  margin-top: 6px;
-  display: flex;
   flex-direction: column;
 }
 
@@ -170,4 +163,14 @@ body {
   margin: 8px 0px;
   border: 1px #dca85d solid;
   padding: 6px;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  position: absolute;
+  z-index: 1;
+  padding: 20px;
 }

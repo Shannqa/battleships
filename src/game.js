@@ -1,20 +1,12 @@
-import { placeShips, cleanPlaceDom, placementError, gameEnd } from "./dom.js";
-
-let currentPlayer = null;
+import { gameEnd } from "./dom.js";
 
 const players = {
   current: null,
   human: null,
   AI: null,
-  prepare: null
-}
-/*
-const boards = {
-  human: null,
-  AI: null,
-  prep: null
-}
-*/
+  prepare: null,
+};
+
 class Ship {
   constructor(length, id) {
     this.length = length;
@@ -77,14 +69,14 @@ class Gameboard {
       return "invalid move";
     }
 
-    if (currentPlayer === "human") {
+    if (players.current === "human") {
       square = document.querySelector(
         `.enemy-square#r${coords[0]}c${coords[1]}`
       );
-      currentPlayer = "AI";
-    } else if (currentPlayer === "AI") {
+      players.current = "AI";
+    } else if (players.current === "AI") {
       square = document.querySelector(`.own-square#r${coords[0]}c${coords[1]}`);
-      currentPlayer = "human";
+      players.current = "human";
     }
 
     //record a hit or miss
@@ -103,15 +95,15 @@ class Gameboard {
     console.log("owner: " + this.owner, "hits: " + this.receivedHits);
     //console.log(this.grid);
     //if it's AI's turn now, send an attack
-    if (currentPlayer === "AI") {
-      boards.human.AIattack();
+    if (players.current === "AI") {
+      players.human.board.AIattack();
     }
     // console.log(this.grid);
   }
 
   playerAttack(coords) {
     // if it's not the player's turn, clicking on enemy board will do nothing
-    if (currentPlayer === "human") {
+    if (players.current === "human") {
       boards.AI.receiveAttack(coords);
     }
     return;
@@ -129,18 +121,21 @@ class Gameboard {
 
   playerAttack(coords) {
     // if it's not the player's turn, clicking on enemy board will do nothing
-    if (currentPlayer === "human") {
-      boards.AI.receiveAttack(coords);
+    if (players.current === "human") {
+      players.AI.board.receiveAttack(coords);
     }
     return;
   }
 
   checkIfLost() {
-    const possibleScore = Gameboard.shipLengths.reduce((previous, current, initial) => previous + current, 0);
+    const possibleScore = Gameboard.shipLengths.reduce(
+      (previous, current, initial) => previous + current,
+      0
+    );
     if (this.receivedHits >= possibleScore) {
       this.lostGame = true;
       console.log("game lost: " + this.owner);
-      gameEnd();
+      gameEnd(this.owner);
     }
   }
 
@@ -255,7 +250,7 @@ class Gameboard {
     const main = document.querySelector(".main");
     const array = this.grid;
     const body = document.querySelector("body");
-    const prepBoardDiv = document.querySelector("div.prep-board");
+    const prepBoardDiv = document.querySelector("div.prep-board-div");
     const grid = document.createElement("div");
     array.forEach((row, rindex) => {
       row.forEach((column, cindex) => {
@@ -290,7 +285,7 @@ class Gameboard {
         grid.appendChild(square);
       });
     });
-    
+
     if (this.owner === "human") {
       grid.classList.add("grid-own");
       main.appendChild(grid);
@@ -299,7 +294,6 @@ class Gameboard {
       main.appendChild(grid);
     } else if (this.owner === "prepare") {
       grid.classList.add("grid-prep");
-      ///////////
       prepBoardDiv.appendChild(grid);
     }
     grid.classList.add("grid");
@@ -313,26 +307,14 @@ class Player {
     this.board = new Gameboard(owner);
   }
 }
+
+function getPlayers() {
+  players.human = new Player("human");
+  players.AI = new Player("AI");
+  players.prepare = new Player("prepare");
+}
+
 /*
-function playGame() {
-  const playerA = new Player("human");
-  const playerB = new Player("AI");
-  const boardA = new Gameboard("human");
-  const boardB = new Gameboard("AI");
-
-  let checkPlaced = placeShips(boardA);
-  if (checkPlaced === true) {
-    // console.log("truee");
-    return placementError();
-  }
-  cleanPlaceDom();
-  boardA.drawGrid();
-  boardB.getRandomPlacement();
-  boardB.drawGrid();
-  // console.log(boardB.grid);
-  currentPlayer = "human";
-}*/
-
 function playTestGame() {
   const playerA = new Player("human");
   const playerB = new Player("AI");
@@ -347,10 +329,6 @@ function playTestGame() {
   boards.AI.drawGrid();
   // console.log(boardB.grid);
   currentPlayer = "human";
-}
+}*/
 
-/*function AImove() {
-  boardA.AIattack();
-}
-*/
-export { Ship, Gameboard, Player, playGame, playTestGame, players };
+export { Ship, Gameboard, Player, players, getPlayers };
