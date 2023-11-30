@@ -142,7 +142,7 @@ function checkPlacements() {
   if (placeOnBoard === false) {
     const errorMsg = document.querySelector(".error-msg");
     errorMsg.classList.remove("hidden");
-    return;
+    return placementError();
   }
   const prepBoardDiv = document.querySelector(".prep-board-div");
   const prepShipsDiv = document.querySelector(".prep-ships-div");
@@ -156,14 +156,18 @@ function checkPlacements() {
   players.current = "human";
 }
 
+// reset the human board due to placement error
 function placementError() {
-  const prepShipsDiv = document.querySelector(".prep-ships-div");
-
-  e;
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      if (players.human.board.grid[i][j] !== null) {
+        players.human.board.grid[i][j] = null;
+      }
+    }
+  }
 }
 
 // add ships to the players gameboard
-//error: if ships at the beginning of the list are good, they get added to the grid. then, once an error happens, they stay inside the array instead of being removed
 function placeShips(board) {
   // get placed ships coords
   for (let i = 0; i < Gameboard.shipLengths.length; i++) {
@@ -221,7 +225,7 @@ function gameEnd(player) {
   const button = document.createElement("button");
 
   modal.classList.add("modal");
-  button.classList.add("modal-button");
+  button.classList.add("button-modal");
   button.textContent = "Play again";
   button.addEventListener("click", playAgain);
   players.current = null;
@@ -242,4 +246,4 @@ function playAgain() {
   prepareShips();
 }
 
-export { createDom, prepareShips, placeShips, placementError, gameEnd };
+export { createDom, prepareShips, placeShips, gameEnd };

@@ -129,12 +129,12 @@ body {
   align-self: center;
 }
 
-.start-game:hover, .button:hover {
+.start-game:hover, .button-modal:hover {
   background-color: #234e66;
   cursor: pointer;
 }
 
-.start-game:active, .button:active {
+.start-game:active, .button-modal:active {
   background-color: rgb(56 9 135);
 }
 
@@ -172,5 +172,11 @@ body {
 .modal {
   position: absolute;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+  background-color: rgba(13, 30, 38, 0.7);
+  font-size: 1.5rem;
+  font-weight: bold;
 }
