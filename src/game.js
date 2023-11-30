@@ -1,12 +1,20 @@
-import { placeShips, cleanPlaceDom, placementError } from "./dom.js";
+import { placeShips, cleanPlaceDom, placementError, gameEnd } from "./dom.js";
 
 let currentPlayer = null;
+
+const players = {
+  current: null,
+  human: null,
+  AI: null,
+  prepare: null
+}
+/*
 const boards = {
   human: null,
   AI: null,
   prep: null
 }
-
+*/
 class Ship {
   constructor(length, id) {
     this.length = length;
@@ -36,8 +44,8 @@ class Gameboard {
     this.shipsList = [];
     this.receivedHits = 0;
     this.lostGame = false;
-    this.shipLengths = [2, 3, 4, 5];
   }
+  static shipLengths = [2, 3, 4, 5];
 
   placeShip(length, coordsStart, coordsEnd) {
     const id = this.shipsList.length;
@@ -128,13 +136,12 @@ class Gameboard {
   }
 
   checkIfLost() {
-    const possibleScore = this.shipLengths.reduce((previous, current, initial) => previous + current, 0);
+    const possibleScore = Gameboard.shipLengths.reduce((previous, current, initial) => previous + current, 0);
     if (this.receivedHits >= possibleScore) {
       this.lostGame = true;
       console.log("game lost: " + this.owner);
-      return true;
+      gameEnd();
     }
-    return false;
   }
 
   createGrid() {
@@ -150,8 +157,8 @@ class Gameboard {
 
   // generate random ships and place them on the enemy board
   getRandomPlacement() {
-    for (let i = this.shipLengths.length - 1; i >= 0; i--) {
-      const shipL = parseInt(this.shipLengths[i]);
+    for (let i = Gameboard.shipLengths.length - 1; i >= 0; i--) {
+      const shipL = parseInt(Gameboard.shipLengths[i]);
       let coords = this.getNewCoords(shipL);
       this.placeShip(
         shipL,
@@ -247,11 +254,9 @@ class Gameboard {
   drawGrid() {
     const main = document.querySelector(".main");
     const array = this.grid;
-    // console.log(array);
-
     const body = document.querySelector("body");
+    const prepBoardDiv = document.querySelector("div.prep-board");
     const grid = document.createElement("div");
-
     array.forEach((row, rindex) => {
       row.forEach((column, cindex) => {
         const square = document.createElement("div");
@@ -265,7 +270,6 @@ class Gameboard {
           });
         } else if (this.owner === "prepare") {
           square.classList.add("prep-square");
-
         }
         if (typeof column == "number") {
           // console.log(column);
@@ -287,22 +291,17 @@ class Gameboard {
       });
     });
     
-
     if (this.owner === "human") {
       grid.classList.add("grid-own");
       main.appendChild(grid);
-
     } else if (this.owner === "AI") {
       grid.classList.add("grid-enemy");
       main.appendChild(grid);
-
     } else if (this.owner === "prepare") {
-      console.log("preppy");
       grid.classList.add("grid-prep");
-      const prepBoard = document.querySelector(".prep-board");
-      prepBoard.appendChild(grid);
+      ///////////
+      prepBoardDiv.appendChild(grid);
     }
-    
     grid.classList.add("grid");
   }
 }
@@ -310,9 +309,11 @@ class Gameboard {
 class Player {
   constructor(owner) {
     this.owner = owner;
+    this.status = null;
+    this.board = new Gameboard(owner);
   }
 }
-
+/*
 function playGame() {
   const playerA = new Player("human");
   const playerB = new Player("AI");
@@ -330,7 +331,7 @@ function playGame() {
   boardB.drawGrid();
   // console.log(boardB.grid);
   currentPlayer = "human";
-}
+}*/
 
 function playTestGame() {
   const playerA = new Player("human");
@@ -348,20 +349,8 @@ function playTestGame() {
   currentPlayer = "human";
 }
 
-function AImove() {
+/*function AImove() {
   boardA.AIattack();
 }
-
-// function gameLoop() {
-
-//}
-// wait for players attack...
-// after player clicks on a square sending an attack, run receive attack on enemy board
-// block the possibility of user attacking
-// generate random hit of the ai
-// run receive attack on human board
-// enable listeners on enemy board
-// wait for player to attack...
-//}
-
-export { Ship, Gameboard, Player, playGame, playTestGame, boards };
+*/
+export { Ship, Gameboard, Player, playGame, playTestGame, players };

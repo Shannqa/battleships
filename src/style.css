@@ -78,7 +78,7 @@ body {
   border: 1px solid #aaaaaa;
 }
 
-.own-board {
+.prep-board {
   margin: 6px;
   display: flex;
   flex-direction: column;
@@ -86,14 +86,14 @@ body {
   width: 300px;
 }
 
-.place-ships {
+.prep-ships {
   margin: 6px 24px;
   display: flex;
   flex-direction: column;
   width: 300px;
 }
 
-.place-ships > span, .own-board > span {
+.prep-ships > span, .prep-ships > span {
   font-size: 1.5rem;
   margin-bottom: 8px;
 }
@@ -120,13 +120,13 @@ body {
   flex-direction: column;
 }
 
-.place-info {
+.prep-info {
   margin-top: 6px;
   display: flex;
   flex-direction: column;
 }
 
-.start-game {
+.start-game, .button-modal {
   margin: 10px;
   background-color: #11364a;
   color: #dca85d;
@@ -136,12 +136,12 @@ body {
   align-self: center;
 }
 
-.start-game:hover {
+.start-game:hover, .button:hover {
   background-color: #234e66;
   cursor: pointer;
 }
 
-.start-game:active {
+.start-game:active, .button:active {
   background-color: rgb(56 9 135);
 }
 

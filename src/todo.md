@@ -13,6 +13,6 @@
 - transitions
 - timeout on players attacking
 - attack animation
-- change the way placement board is created, use board method instead of copying the code
+> change the way placement board is created, use board method instead of copying the code
 - change win condition from depending on ship lengths to actual ship objects being destroyed
 - game over / restart ui
