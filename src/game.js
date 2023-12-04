@@ -376,21 +376,13 @@ function getPlayers() {
   players.prepare = new Player("prepare");
 }
 
-/*
+
 function playTestGame() {
-  const playerA = new Player("human");
-  const playerB = new Player("AI");
-  boards.human = new Gameboard("human");
-  boards.AI = new Gameboard("AI");
+  players.human.board.getRandomPlacement();
+  players.human.board.drawGrid();
+  players.AI.board.getRandomPlacement();
+  players.AI.board.drawGrid();
+  players.current = "human";
+}
 
-  cleanPlaceDom();
-  boards.human.getRandomPlacement();
-
-  boards.human.drawGrid();
-  boards.AI.getRandomPlacement();
-  boards.AI.drawGrid();
-  // console.log(boardB.grid);
-  currentPlayer = "human";
-}*/
-
-export { Ship, Gameboard, Player, players, getPlayers };
+export { Ship, Gameboard, Player, players, getPlayers, playTestGame };
