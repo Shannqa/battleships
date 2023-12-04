@@ -313,6 +313,10 @@ class Gameboard {
     const array = this.grid;
     const body = document.querySelector("body");
     const prepBoardDiv = document.querySelector("div.prep-board-div");
+    const boardContainer = document.createElement("div");
+    const boardTitle = document.createElement("div");
+    boardContainer.classList.add("board-container");
+    boardTitle.classList.add("board-title")
     const grid = document.createElement("div");
     array.forEach((row, rindex) => {
       row.forEach((column, cindex) => {
@@ -350,15 +354,23 @@ class Gameboard {
 
     if (this.owner === "human") {
       grid.classList.add("grid-own");
-      main.appendChild(grid);
+      boardTitle.textContent = "Your fleet";
+      boardContainer.appendChild(boardTitle);
+      boardContainer.appendChild(grid);
     } else if (this.owner === "AI") {
       grid.classList.add("grid-enemy");
-      main.appendChild(grid);
+      boardTitle.textContent = "Enemy fleet";
+      boardContainer.appendChild(boardTitle);
+      boardContainer.appendChild(grid);
     } else if (this.owner === "prepare") {
       grid.classList.add("grid-prep");
+      boardTitle.textContent = "Place your ships";
+      boardContainer.appendChild(boardTitle);
+      boardContainer.appendChild(grid);
       prepBoardDiv.appendChild(grid);
     }
     grid.classList.add("grid");
+    main.appendChild(boardContainer);
   }
 }
 
