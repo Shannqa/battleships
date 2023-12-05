@@ -299,11 +299,31 @@ class Gameboard {
   checkIfOccupied(fullCoordinates) {
     // console.log(fullCoordinates);
     for (let i = 0; i < fullCoordinates.length; i++) {
-      let coord = fullCoordinates[i];
-      if (this.grid[parseInt(coord[0])][parseInt(coord[1])] !== null) {
-        // console.log("check - occupied");
+      let [x, y] = fullCoordinates[i];
+      x = parseInt(x);
+      y = parseInt(y);
+      
+      if (this.grid[x][y] !== null) {
+        // square is occupied
         return true;
       }
+      
+      // check if any surrounding squares are occupied - if so, generate new coords. ships shouldnt be too close to each other
+      let closeSq = [
+        [x - 1, y - 1],
+        [x - 1, y + 1],
+        [x + 1, y - 1], 
+        [x + 1, y + 1]
+      ].filter((item) => {
+        return item[0] >= 0 && item[0] <= 9 && item[1] >= 0 && item[1] <= 9;
+      });
+      
+      for (let j = 0; j < closeSq.length; j++) {
+        if (typeof this.grid[closeSq[j][0]][closeSq[j][1]] === "number" && this.grid[closeSq[j][0]][closeSq[j][1]] !== this.grid[x][y]) {
+          // if any of the neighboring squares contain ships and their id is not the same as the currently considered ship's id, return and try with new coords
+          return true;
+        }
+      } 
     }
     return false;
   }
