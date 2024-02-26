@@ -5,7 +5,7 @@ function Root() {
   return(
     <div>
       <div className="links">
-        <Link to={`battleships`}>Battleships</Link>
+        <Link to="/">Home</Link>
       </div>
       <div>
         <Outlet />
@@ -16,10 +16,10 @@ function Root() {
 
 export default Root
 
-<div className={({ isActive, isPending }) =>
+{/* <div className={({ isActive, isPending }) =>
                       isActive
                         ? "active"
                         : isPending
                         ? "pending"
                         : "">
-                        </div>
+                        </div> */}

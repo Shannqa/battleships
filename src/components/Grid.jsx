@@ -11,19 +11,20 @@ function Grid() {
       gridArray[y].push(null);
     }
   }
+  
   return(
-    <div className="board-container">
+    <div className="board">
       {gridArray.map((row, rindex) => (
-      row.map((column, cindex)) => (
-        <div className="cell" data-row={rindex} data-column= {cindex}></div>
-      
-      )))}
+        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex}></div>))
+      ))}
     
     </div>
-    )
+  )
 }
-  
 
+export default Grid
+  
+{/* 
 drawGrid() {
     const main = document.querySelector(".main");
     const array = this.grid;
@@ -88,6 +89,7 @@ drawGrid() {
     grid.classList.add("grid");
     main.appendChild(boardContainer);
   }
+}
 
 
 
@@ -140,4 +142,4 @@ return(
   )
 }
 
-export default Board
+export default Board */}
