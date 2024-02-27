@@ -2,20 +2,17 @@ import React, { useState } from "react";
 
 const gridSize = 10;
 
-function Grid() {
-  let gridArray = [];
-  
-  for (let y = 0; y < gridSize; y++) {
-    gridArray.push([]);
-    for (let x = 0; x < gridSize; x++) {
-      gridArray[y].push(null);
-    }
+function Grid({ owner, board, setter }) {
+  let gridArray = board.grid;
+  // handle clicks on the enemy (AI) board
+  function clickHandler() {
+    
   }
   
   return(
     <div className="board">
       {gridArray.map((row, rindex) => (
-        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex}></div>))
+        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === AI ? clickHandler : null}></div>))
       ))}
     
     </div>
@@ -23,6 +20,80 @@ function Grid() {
 }
 
 export default Grid
+  
+  // //////////
+  import React, { useState } from "react"
+
+const gridSize = 10;
+
+function Grid() {
+  const [gridArray, setGridArray] = useState(() => {
+    let grid = [];
+    for (let y = 0; y < gridSize; y++) {
+      grid.push([]);
+      for (let x = 0; x < gridSize; x++) {
+        grid[y].push(null);
+      }
+    }
+    return grid;
+  });
+  
+  
+  const handleClick = (rindex, cindex) => {
+    setGridArray(gridArray.map((row, rowIndex) => {
+      if (rowIndex === rindex) {
+        console.log(gridArray[rowIndex]);
+        row.map((column, colIndex) => {
+          if (colIndex === cindex) {
+            row[colIndex] = "b"
+            console.log(row[colIndex]);
+            return column;
+        }})
+      }
+      
+      return row;
+    }))
+  }
+  
+  // or
+  /*gridArray.map((item) => {
+    if (gridArray[rindex][cindex] 
+  })*/
+  
+  const handleExperienceData = (id, e) => {
+    setter(data.map(section => {
+      console.log(section);
+      return section.map((item) => { // remember to return in nested arrays!
+        console.log(item);
+        if (item.id === id) {
+          return {
+            ...item,
+            value: e.target.value,
+          };
+        } else {
+          return item;
+        }
+      })
+    }))
+  }
+  
+  console.log(gridArray);
+  return(
+    <div className="board">
+      {gridArray.map((row, rindex) => (
+      row.map((column, cindex) => (
+        <div className="cell" data-row={rindex} data-column= {cindex} key={rindex-cindex} onClick={() => handleClick(rindex, cindex)}>{column}</div>
+      
+      ))))
+      }
+    
+    </div>
+    )
+}
+  
+export default Grid
+  
+  
   
 {/* 
 drawGrid() {

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-function StartButton(props) {
+function StartButton({ onClick }) {
   
   return(
-    <button className="default-btn" onClick={props.onClick}>Start Game</button>
+    <button className="default-btn" onClick={onClick}>Start Game</button>
     )
 }
 

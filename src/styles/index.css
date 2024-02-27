@@ -4,11 +4,11 @@
   box-sizing: border-box;
 }
 
-
 .board {
   display: grid;
   grid-template-columns: repeat(10, 20px);
 }
+
 .cell {
   width: 20px;
   height: 20px;
