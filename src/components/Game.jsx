@@ -44,7 +44,7 @@ const [boardHuman, setBoardHuman] = useState({
   return(
     <div className="game">
       {gameState === "prepare" && <ShipPlacer setGameState={setGameState} grid={boardPrep.grid} />}
-      {gameState === "playing" && <Gameboards boardHuman={boardHuman} setterHuman={setBoardHuman} boardAI={boardAI} setterAI={setBoardAI} />}
+      {gameState === "playing" && <Gameboards gridHuman={boardHuman.grid} gridAI={boardAI.grid} />}
     </div>
   )
 }

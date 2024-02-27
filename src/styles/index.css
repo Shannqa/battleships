@@ -33,6 +33,11 @@ h3 {
   justify-items: center;
 }
 
+/* .ship-placer .cell:hover,
+.ship-placer .cell:hover + .cell{
+  background-color: #234e66;
+} */
+
 .ship-placer h3 {
   grid-column: 1 / 3;
 }
@@ -41,6 +46,9 @@ h3 {
   display: flex;
 }
 
+.ship-to-place .cell {
+  background-color: #234e66;
+}
 .default-btn {
   margin: 10px;
   background-color: #11364a;
@@ -58,4 +66,18 @@ h3 {
 
 .default-btn:active, .default-btn:active {
   background-color: rgb(56 9 135);
+}
+
+.gameboards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
+.ship-on-board {
+  background-color: red;
+}
+
+.flex-toggle {
+  flex-direction: column;
 }

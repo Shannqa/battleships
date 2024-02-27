@@ -6,11 +6,30 @@ function Grid({ owner, board, grid, setter }) {
   function clickHandler() {
     
   }
+
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drop(ev) {
+    // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
+    
+    try {
+      ev.preventDefault();
+      var data = ev.dataTransfer.getData("text");
+      console.log(data);
+      document.getElementById(data).classList.add("ship-on-board");
+      ev.target.appendChild(document.getElementById(data));
+    } catch {
+      console.log("error - drag&drop");
+      return;
+    }
+    }
   
   return(
     <div className="board">
       {gridArray.map((row, rindex) => (
-        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === "AI" ? clickHandler : null}></div>))
+        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === "AI" ? clickHandler : null} onDrop={drop} onDragOver={allowDrop}></div>))
       ))}
     
     </div>

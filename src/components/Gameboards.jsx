@@ -1,17 +1,17 @@
 import React, { useState } from "react";
-
-function Gameboards({ boardHuman, setterHuman, boardAI, setterAI }) {
+import Grid from "./Grid.jsx";
+function Gameboards({ gridHuman, gridAI }) {
   
-  
+  //boardHuman, setterHuman, boardAI, setterAI
   return(
     <div className="gameboards">
       <div>
         <h3>Your Board</h3>
-        <Grid owner="human" board={boardHuman} setter={setterHuman} />
+        <Grid owner="human" grid={gridHuman} />
       </div>
       <div>
         <h3>Enemy Board</h3>
-        <Grid owner="AI" board={boardAI} setter={setterAI}/>
+        <Grid owner="AI" grid={gridAI} />
       </div>
     </div>
   )

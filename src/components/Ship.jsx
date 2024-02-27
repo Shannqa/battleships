@@ -8,38 +8,17 @@ function Ship(props) {
   }
 
   /* Drag and drop functions */
-  function allowDrop(ev) {
-    ev.preventDefault();
-  }
 
   function dragStart(ev) {
-    //ev.dataTransfer.setData("text", ev.target.id);
-  }
-
-  function drop(ev) {
-  // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
-  /*
-  try {
-    ev.preventDefault();
-    var data = ev.dataTransfer.getData("text");
-    document.getElementById(data).classList.add("ship-on-board");
-    ev.target.appendChild(document.getElementById(data));
-  } catch {
-    console.log("error - drag&drop");
-    return;
-  }*/
+    ev.dataTransfer.setData("text", ev.target.id);
   }
   
-  function doubleClick() {
-    
-  }
-
   function dragEnd() {
     //areAllShipsPlaced();
   }
   
   function doubleClick(ev) {
-    ev.target.classList.toggle("flex-toggle");
+    ev.currentTarget.classList.toggle("flex-toggle");
   }
 
   
