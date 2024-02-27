@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Ship from "./Ship.jsx";
 
-function ShipPlacer({ setGameState }) {
+function ShipPlacer({ setGameState, boardPrep, setterPrep }) {
   const shipSizes = [2, 3, 4, 5];
   
   function checkPlacements() {
@@ -19,7 +19,7 @@ function ShipPlacer({ setGameState }) {
     <div className="ship-placer">
       <h3>Place your ships</h3>
       <div>
-        <Grid owner="prepare" />
+        <Grid owner="prepare" board={boardPrep} setter={setterPrep}/>
       </div>
       <div>
         <p>Drag & drop the ships on the board. Double-click a ship to rotate it.</p>
