@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Component from './Component.jsx';
 import Ship from "./Ship.jsx";
 
 function ShipPlacer({ setGameState }) {
