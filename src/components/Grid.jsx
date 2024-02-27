@@ -21,7 +21,7 @@ function Grid({ owner, board, setter }) {
 
 export default Grid
   
-  // //////////
+  /*
   import React, { useState } from "react"
 
 const gridSize = 10;
@@ -56,9 +56,9 @@ function Grid() {
   }
   
   // or
-  /*gridArray.map((item) => {
+  gridArray.map((item) => {
     if (gridArray[rindex][cindex] 
-  })*/
+  })
   
   const handleExperienceData = (id, e) => {
     setter(data.map(section => {
@@ -95,7 +95,7 @@ export default Grid
   
   
   
-{/* 
+{
 drawGrid() {
     const main = document.querySelector(".main");
     const array = this.grid;
@@ -213,4 +213,4 @@ return(
   )
 }
 
-export default Board */}
+export default Board */
