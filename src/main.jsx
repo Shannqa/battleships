@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Router from './components/Router.jsx';
+import Game from "./components/Game.jsx"
 
 // import './index.css'
 

@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 
-const gridSize = 10;
-
-function Grid({ owner, board, setter }) {
-  let gridArray = board.grid;
+function Grid({ owner, board, grid, setter }) {
+  let gridArray = grid;
   // handle clicks on the enemy (AI) board
   function clickHandler() {
     
@@ -12,7 +10,7 @@ function Grid({ owner, board, setter }) {
   return(
     <div className="board">
       {gridArray.map((row, rindex) => (
-        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === AI ? clickHandler : null}></div>))
+        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === "AI" ? clickHandler : null}></div>))
       ))}
     
     </div>

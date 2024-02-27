@@ -44,7 +44,7 @@ function Ship(props) {
 
   
   return(
-    <div className="ship-to-place" id={"to-place-" + props.index} draggable="true" onDragStart={dragStart} ondblclick={doubleClick} onDragEnd={dragEnd}>
+    <div className="ship-to-place" id={"to-place-" + props.index} draggable="true" onDragStart={dragStart} onDoubleClick={doubleClick} onDragEnd={dragEnd}>
       {singleShip}
     </div>
   )

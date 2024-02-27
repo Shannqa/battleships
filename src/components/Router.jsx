@@ -1,3 +1,4 @@
+import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from "./Root.jsx";
 import ErrorPage from "./ErrorPage.jsx";
@@ -7,14 +8,8 @@ function Router() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Root />,
+      element: <Game />,
       errorElement: <ErrorPage />,
-      children: [
-        {
-          path: "/game",
-          element: <Game />
-        }
-        ]
     }
     ]);
   return <RouterProvider router={router} />

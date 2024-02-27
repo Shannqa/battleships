@@ -40,12 +40,11 @@ const [boardHuman, setBoardHuman] = useState({
     aiQueue: [],
     aiHits: []
   });
-  
+
   return(
     <div className="game">
-      {gameState === "prepare" && <ShipPlacer setGameState={setGameState} boardPrep={boardPrep} setterPrep={setBoardPrep}/>}
+      {gameState === "prepare" && <ShipPlacer setGameState={setGameState} grid={boardPrep.grid} />}
       {gameState === "playing" && <Gameboards boardHuman={boardHuman} setterHuman={setBoardHuman} boardAI={boardAI} setterAI={setBoardAI} />}
-      <Grid />
     </div>
   )
 }
