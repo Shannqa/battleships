@@ -13,11 +13,12 @@ function Ship(props) {
   }
 
   function dragStart(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    //ev.dataTransfer.setData("text", ev.target.id);
   }
 
   function drop(ev) {
   // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
+  /*
   try {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
@@ -26,7 +27,11 @@ function Ship(props) {
   } catch {
     console.log("error - drag&drop");
     return;
+  }*/
   }
+  
+  function doubleClick() {
+    
   }
 
   function dragEnd() {
@@ -38,8 +43,8 @@ function Ship(props) {
   }
 
   
-  return (
-    <div className="ship-to-place" id={"to-place-" + props.index} draggable="true" onDragStart={dragStart} ondblclick={} onDragEnd={dragEnd}>
+  return(
+    <div className="ship-to-place" id={"to-place-" + props.index} draggable="true" onDragStart={dragStart} ondblclick={doubleClick} onDragEnd={dragEnd}>
       {singleShip}
     </div>
   )
