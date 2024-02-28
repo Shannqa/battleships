@@ -4,13 +4,15 @@ function Ship(props) {
   const size = parseInt(props.size);
   let singleShip = [];
   for (let i = 0; i < size; i++) {
-    singleShip.push(<div className="cell" key={size + i}></div>);
+    singleShip.push(<div className="cell" key={size + i} id={i} data-cell={i + 1} data-size={size}></div>);
   }
 
   /* Drag and drop functions */
 
+  let draggedElement = null;
+
   function dragStart(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
+    ev.dataTransfer.setData("text/plain", ev.target.id);
   }
   
   function dragEnd() {
@@ -23,7 +25,7 @@ function Ship(props) {
 
   
   return(
-    <div className="ship-to-place" id={"to-place-" + props.index} draggable="true" onDragStart={dragStart} onDoubleClick={doubleClick} onDragEnd={dragEnd}>
+    <div className="ship-to-place" id={"to-place-" + props.size} draggable="true" onDragStart={dragStart} onDoubleClick={doubleClick} onDragEnd={dragEnd}>
       {singleShip}
     </div>
   )

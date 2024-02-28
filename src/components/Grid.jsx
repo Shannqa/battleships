@@ -12,10 +12,15 @@ function Grid({ owner, board, grid, setter }) {
     ev.preventDefault();
     // set a class on a cell that's hovered over when dragging the ship to the board
     ev.target.classList.add("dragover-ship");
-  }
+    // console.log(ev.target.dataset.column);
 
+  }
   function onDragLeave(ev) {
     ev.preventDefault();
+    removeClass();
+  }
+
+  function removeClass() {
     // if any cell has the class, remove it when dragover event ends
     const hoveredCells = document.querySelectorAll(".dragover-ship");
     if (hoveredCells) {
@@ -23,23 +28,47 @@ function Grid({ owner, board, grid, setter }) {
         cell.classList.remove("dragover-ship");
       }
     }
-
   }
 
   function drop(ev) {
     // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
     try {
       ev.preventDefault();
-      var data = ev.dataTransfer.getData("text");
+      var data = ev.dataTransfer.getData("text"); // id
+      const draggedShip = document.querySelector(`#${data}`);
+      const shipSize = parseInt(data.slice(-1));
+      const targetColumn = parseInt(ev.target.dataset.column);
+      const targetRow = parseInt(ev.target.dataset.row);
+
+      if (draggedShip.classList.contains("flex-toggle")) {
+        // ship is horizontal
+        if (shipSize + targetRow > 10) {
+          removeClass();
+          return;
+        }        
+      } else {
+        // ship is vertical
+        if (shipSize + targetColumn > 10) {
+          removeClass();
+          return;
+        }
+      }
+
+      // if the ship would be placed outside of the grid
+
       console.log(data);
       document.getElementById(data).classList.add("ship-on-board");
       ev.target.appendChild(document.getElementById(data));
     } catch {
       console.log("error - drag&drop");
+      removeClass();
       return;
     }
-    }
+  }
   
+  function checkIfTaken() {
+
+  }
   return(
     <div className="board">
       {gridArray.map((row, rindex) => (
