@@ -74,9 +74,15 @@ h3 {
   justify-items: center;
 }
 
-.ship-on-board {
+.dragover-ship {
   background-color: red;
 }
+
+.ship-on-board {
+  background-color: green;
+  position: absolute;
+}
+
 
 .flex-toggle {
   flex-direction: column;

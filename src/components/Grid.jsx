@@ -4,16 +4,30 @@ function Grid({ owner, board, grid, setter }) {
   let gridArray = grid;
   // handle clicks on the enemy (AI) board
   function clickHandler() {
-    
+
   }
 
-  function allowDrop(ev) {
+  /* Drag and drop */
+  function onDragOver(ev) {
     ev.preventDefault();
+    // set a class on a cell that's hovered over when dragging the ship to the board
+    ev.target.classList.add("dragover-ship");
+  }
+
+  function onDragLeave(ev) {
+    ev.preventDefault();
+    // if any cell has the class, remove it when dragover event ends
+    const hoveredCells = document.querySelectorAll(".dragover-ship");
+    if (hoveredCells) {
+      for (let cell of hoveredCells) {
+        cell.classList.remove("dragover-ship");
+      }
+    }
+
   }
 
   function drop(ev) {
     // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
-    
     try {
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");
@@ -29,7 +43,7 @@ function Grid({ owner, board, grid, setter }) {
   return(
     <div className="board">
       {gridArray.map((row, rindex) => (
-        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === "AI" ? clickHandler : null} onDrop={drop} onDragOver={allowDrop}></div>))
+        row.map((column, cindex) => (<div className="cell" data-row={rindex} data-column={cindex} key={rindex + "-" + cindex} onClick={owner === "AI" ? clickHandler : null} onDrop={drop} onDragOver={onDragOver} onDragLeave={onDragLeave}></div>))
       ))}
     
     </div>
