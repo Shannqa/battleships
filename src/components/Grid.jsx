@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {getFullCoords} from "./Ship.jsx";
 
 function Grid({ owner, board, grid, setter }) {
   let gridArray = grid;
@@ -37,23 +38,19 @@ function Grid({ owner, board, grid, setter }) {
       var data = ev.dataTransfer.getData("text"); // id
       const draggedShip = document.querySelector(`#${data}`);
       const shipSize = parseInt(data.slice(-1));
-      const targetColumn = parseInt(ev.target.dataset.column);
-      const targetRow = parseInt(ev.target.dataset.row);
+      const targetX = parseInt(ev.target.dataset.column);
+      const targetY = parseInt(ev.target.dataset.row);
+      const direction = draggedShip.classList.contains("flex-toggle") ? "vertical" : "horizontal";
 
-      if (draggedShip.classList.contains("flex-toggle")) {
-        // ship is horizontal
-        if (shipSize + targetRow > 10) {
-          removeClass();
-          return;
-        }        
-      } else {
-        // ship is vertical
-        if (shipSize + targetColumn > 10) {
-          removeClass();
-          return;
-        }
+      const full = getFullCoords([targetX, targetY], shipSize, direction);
+      console.log(full);
+      // to add: need to list full coords when direction is toggled while on the board!
+
+      if ((direction === "horizontal" && shipSize + targetX > 10) || 
+      (direction === "vertical" && shipSize + targetY > 10)) {
+        removeClass();
+        return;
       }
-
       // if the ship would be placed outside of the grid
 
       console.log(data);

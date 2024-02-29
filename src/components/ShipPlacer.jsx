@@ -1,10 +1,24 @@
 import React, {useState} from "react";
-import Ship from "./Ship.jsx";
+import Ship, {getFullCoords} from "./Ship.jsx";
 import Grid from "./Grid.jsx";
 import StartButton from "./StartButton.jsx"
 
 function ShipPlacer({ setGameState, grid }) {
   const shipSizes = [2, 3, 4, 5];
+
+  const [ships, seShips] = useState(shipSizes.map((ship, index) => ({
+      id: {index},
+      size: ship,
+      direction: null, // horizontal || vertical
+      start: [null, null],
+      fullCoords: "", // getFullCoords(start, size, direction),
+      placed: false, // true || false
+      hits: null // ["x", "y"]
+    }
+  )));
+  
+
+
   
   function checkPlacements() {
     let placementsChecked = true;

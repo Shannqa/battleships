@@ -1,5 +1,22 @@
 import React, { useState } from 'react';
 
+  // gets full coordinates of every square in a single ship
+  function getFullCoords(start, size, direction) {
+    const [x, y] = start;
+    let fullCoords = [];
+    
+    if (direction === "vertical") {
+      for (let i = x; i < x + size; i++) {
+        fullCoords.push([i, y]);
+      }
+    } else if (direction === "horizontal") {
+      for (let i = y; i < y + size; i++) {
+        fullCoords.push([x, i]);
+      }
+    }
+    return fullCoords;
+  }
+
 function Ship(props) {
   const size = parseInt(props.size);
   let singleShip = [];
@@ -32,3 +49,4 @@ function Ship(props) {
 }
 
 export default Ship
+export { getFullCoords }
