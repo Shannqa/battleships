@@ -1,66 +1,11 @@
 import React, { useState } from "react";
-import {getFullCoords} from "./Ship.jsx";
+import { getFullCoords } from "./Ship.jsx";
 
 function Grid({ owner, board, grid, setter }) {
   let gridArray = grid;
   // handle clicks on the enemy (AI) board
   function clickHandler() {
 
-  }
-
-  /* Drag and drop */
-  function onDragOver(ev) {
-    ev.preventDefault();
-    // set a class on a cell that's hovered over when dragging the ship to the board
-    ev.target.classList.add("dragover-ship");
-    // console.log(ev.target.dataset.column);
-
-  }
-  function onDragLeave(ev) {
-    ev.preventDefault();
-    removeClass();
-  }
-
-  function removeClass() {
-    // if any cell has the class, remove it when dragover event ends
-    const hoveredCells = document.querySelectorAll(".dragover-ship");
-    if (hoveredCells) {
-      for (let cell of hoveredCells) {
-        cell.classList.remove("dragover-ship");
-      }
-    }
-  }
-
-  function drop(ev) {
-    // catch an error happening if the user tries to drag and drop the ship in a wrong place, e.g. in the middle of multiple squares
-    try {
-      ev.preventDefault();
-      var data = ev.dataTransfer.getData("text"); // id
-      const draggedShip = document.querySelector(`#${data}`);
-      const shipSize = parseInt(data.slice(-1));
-      const targetX = parseInt(ev.target.dataset.column);
-      const targetY = parseInt(ev.target.dataset.row);
-      const direction = draggedShip.classList.contains("flex-toggle") ? "vertical" : "horizontal";
-
-      const full = getFullCoords([targetX, targetY], shipSize, direction);
-      console.log(full);
-      // to add: need to list full coords when direction is toggled while on the board!
-
-      if ((direction === "horizontal" && shipSize + targetX > 10) || 
-      (direction === "vertical" && shipSize + targetY > 10)) {
-        removeClass();
-        return;
-      }
-      // if the ship would be placed outside of the grid
-
-      console.log(data);
-      document.getElementById(data).classList.add("ship-on-board");
-      ev.target.appendChild(document.getElementById(data));
-    } catch {
-      console.log("error - drag&drop");
-      removeClass();
-      return;
-    }
   }
   
   function checkIfTaken() {

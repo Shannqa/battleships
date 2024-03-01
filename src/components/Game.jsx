@@ -31,6 +31,8 @@ const [boardHuman, setBoardHuman] = useState({
     aiHits: []
   });
   
+  const [prepGrid, setPrepGrid] = useState(createGrid());
+  
   const [boardPrep, setBoardPrep] = useState({
     owner: "prep",
     grid: createGrid(),
