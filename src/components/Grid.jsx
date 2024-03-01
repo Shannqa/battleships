@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getFullCoords } from "./Ship.jsx";
+import { drop, onDragOver, onDragLeave } from "../helpers/dragAndDrop.js";
 
 function Grid({ owner, board, grid, setter }) {
   let gridArray = grid;

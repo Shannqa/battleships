@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { dragStart, doubleClick, dragEnd } from "../helpers/dragAndDrop.js";
+import getFullCoords from "../helpers/getFullCoords.js";
 
 function Ship(props) {
   const size = parseInt(props.size);

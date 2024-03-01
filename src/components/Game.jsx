@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Grid from "./Grid";
 import ShipPlacer from "./ShipPlacer";
 import Gameboards from "./Gameboards";
-import createGrid from "../functions/createGrid.js"
+import createGrid from "../helpers/createGrid.js"
 import "../styles/index.css"
 
 
